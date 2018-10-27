@@ -10,6 +10,7 @@ namespace TECGames
     {
         static void Main(string[] args)
         {
+            Console.ReadKey();
         }
     }
 }
