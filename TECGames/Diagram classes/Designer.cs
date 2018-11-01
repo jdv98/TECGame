@@ -8,5 +8,18 @@ namespace TECGames.Diagram_classes
 {
     class Designer
     {
+        private int id;
+        private string name;
+        private double price;
+        private int workSection;
+
+        public int Id { get => id; set => id = value; }
+        public string Name { get => name; set => name = value; }
+        public double Price { get => price; set => price = value; }
+        public int WorkSection { get => workSection; set => workSection = value; }
+
+        public Designer()
+        {
+        }
     }
 }

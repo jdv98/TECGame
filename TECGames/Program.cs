@@ -14,6 +14,7 @@ namespace TECGames
         List<Ubication> ubicationList = new List<Ubication>();
         List<WorkSection> workSectionList = new List<WorkSection>();
         List<Designer> designerList = new List<Designer>();
+
         static void Main(string[] args)
         {
             Console.ReadKey();
