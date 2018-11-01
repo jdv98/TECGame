@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagram classes\Designer.cs" />
+    <Compile Include="Diagram classes\Ubication.cs" />
+    <Compile Include="Diagram classes\Work.cs" />
+    <Compile Include="Diagram classes\WorkSection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
