@@ -10,10 +10,10 @@ namespace TECGames
 {
     class Program
     {
-        List<Work> workList = new List<Work>();
-        List<Ubication> ubicationList = new List<Ubication>();
-        List<WorkSection> workSectionList = new List<WorkSection>();
-        List<Designer> designerList = new List<Designer>();
+        public static List<Work> workList = new List<Work>();
+        public static List<Ubication> ubicationList = new List<Ubication>();
+        public static List<WorkSection> workSectionList = new List<WorkSection>();
+        public static List<Designer> designerList = new List<Designer>();
 
         static void Main(string[] args)
         {
