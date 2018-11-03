@@ -21,5 +21,16 @@ namespace TECGames.Diagram_classes
         public Designer()
         {
         }
+        public Designer(int id)
+        {
+            Id = id;
+        }
+
+        public Designer(int id, string name, double price, int workSection) : this(id)
+        {
+            Name = name;
+            Price = price;
+            WorkSection = workSection;
+        }
     }
 }

@@ -17,6 +17,8 @@ namespace TECGames
 
         static void Main(string[] args)
         {
+            DataGenerator dG=new DataGenerator();
+            dG.BranchBound(1);
             Console.ReadKey();
         }
     }

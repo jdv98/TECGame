@@ -21,5 +21,17 @@ namespace TECGames.Diagram_classes
         public Work()
         {
         }
+
+        public Work(int id)
+        {
+            Id = id;
+        }
+
+        public Work(int id, List<Designer> designers, Ubication ubication, WorkSection workSection):this(id)
+        {
+            Designers = designers;
+            Ubication = ubication;
+            WorkSection = workSection;
+        }
     }
 }

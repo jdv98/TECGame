@@ -21,5 +21,13 @@ namespace TECGames.Diagram_classes
         public WorkSection()
         {
         }
+
+        public WorkSection(int id, string name, double price, int schedule)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            Schedule = schedule;
+        }
     }
 }
