@@ -8,28 +8,36 @@ namespace TECGames.Diagram_classes
 {
     class Designer
     {
-        private int id;
+        private long id;
         private string name;
-        private double price;
+        private Dictionary<int,double> price;
         private int workSection;
+        private String hexId="";
 
-        public int Id { get => id; set => id = value; }
+
+        public long Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
-        public double Price { get => price; set => price = value; }
+        public Dictionary<int, double> Price { get => price; set => price = value; }
         public int WorkSection { get => workSection; set => workSection = value; }
+        public string HexId { get => hexId; set => hexId = value; }
 
         public Designer()
         {
         }
-        public Designer(int id)
+        public Designer(long id)
         {
             Id = id;
+            HexId = Convert.ToString(id, 16);
         }
 
-        public Designer(int id, string name, double price, int workSection) : this(id)
+        public Designer(long id, string name, Dictionary<int, double> price) : this(id)
         {
             Name = name;
             Price = price;
+        }
+
+        public Designer(long id, string name, Dictionary<int, double> price, int workSection) : this(id, name, price)
+        {
             WorkSection = workSection;
         }
     }

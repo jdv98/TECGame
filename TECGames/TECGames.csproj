@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Branch and bound\Branch.cs" />
     <Compile Include="DataGenerator.cs" />
     <Compile Include="Diagram classes\Designer.cs" />
     <Compile Include="Diagram classes\Ubication.cs" />
@@ -54,8 +55,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Branch and bound\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

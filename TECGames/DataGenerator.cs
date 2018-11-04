@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using TECGames.Diagram_classes;
@@ -10,62 +11,123 @@ namespace TECGames
 {
     class DataGenerator
     {
-        public DataGenerator()
+        long cont = 0;
+        long total = 0;
+        long quantity;
+        Random random = new Random(DateTime.Now.Millisecond);
+
+        public DataGenerator(long quantity)
         {
+            this.quantity = quantity;
         }
 
-        public void BranchBound(int quantity)
+        public void BranchBound()
         {
-            Random random=new Random(DateTime.Now.Millisecond);
-            for (int id = 0; id < quantity; id++)
+            random = new Random((int)Math.Pow(DateTime.Now.Millisecond, total) + random.Next(10, 5000) * random.Next(1, 10));
+            try
             {
-                random = new Random((int)Math.Pow(DateTime.Now.Millisecond,id) + random.Next(10, 5000));
-                Work nW = new Work(id);
-                nW.Ubication = new Ubication(quantity + id,Name(random),random.Next(0,3),random.Next(0,3));
-                nW.WorkSection = new WorkSection((int)Math.Pow(quantity, 2)+id,Name(random),random.Next(500,8000000), WSSchedule(nW.Ubication.GetSchedules(),random.Next(0,2)));
-                int designerLimit = random.Next(1, 11);
-                for(int x = 0; x < designerLimit; x++)
+                Parallel.Invoke(CreateDesigner, CreateUbication, CreateWork);
+            }
+            catch
+            {
+                #if DEBUG
+                Console.WriteLine("BTotal: {0}   Memory usage: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
+                #endif
+            }
+            Console.Clear();
+            Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
+        }
+
+        private void CreateDesigner()
+        {
+            try { 
+                for (long counter = 0; counter < quantity; counter++)
                 {
-                    random = new Random((int)Math.Pow(DateTime.Now.Millisecond, x)+random.Next(10,5000));
-                    nW.Designers.Add(new Designer((int)Math.Pow(quantity, 3 + id) + (id+x), Name(random), nW.WorkSection.Price, WSSchedule(nW.Ubication.GetSchedules(), random.Next(0, 2))));
+                    Percent();
+
+                    Program.designerList.Add(new Designer(Program.designerList.Count + 1, Name(random), DesignerPrice(random)));
+                    total++; 
                 }
-                foreach( Designer x in nW.Designers)
+            }
+            catch
+            {
+#if DEBUG
+                Console.WriteLine("DTotal: {0}   Memory: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
+#endif
+            }
+        }
+        private void CreateWork()
+        {
+            try
+            {
+                for (long counter = 0; counter < quantity; counter++)
                 {
-                    Console.WriteLine("Id={0}   Name={1}    Price={2}   WS={3}", x.Id, x.Name, x.Price, x.WorkSection);
+                    Program.workList.Add(new Work(Program.workList.Count + 1));
+                    total++;
                 }
+            }
+            catch
+            {
+#if DEBUG
+                Console.WriteLine("WTotal: {0}   Memory: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
+#endif
+            }
+        }
+        private void CreateUbication()
+        {
+            try
+            {
+                for (long counter = 0; counter < quantity; counter++)
+                {
+                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, Name(random), random.Next(0, 3), random.Next(0, 3)));
+                    total++;
+                }
+            }
+            catch
+            {
+#if DEBUG
+                Console.WriteLine("UTotal: {0}   Memory: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
+#endif
             }
         }
 
-        private int WSSchedule(int[] schedules,int flag)
+        public void Percent()
         {
-            if (schedules[0]!=0 && flag == 1)
+            if (total >= cont || total==quantity)
             {
-                return schedules[0];
+                Console.Clear();
+                double temp = (((double)total)/(((double)3) * ((double)quantity)))*((double)100);
+                Console.WriteLine("Data created: {0}%       Memory usage: {1}MB", (int)temp,(System.GC.GetTotalMemory(true)/ 1000000));
+                cont += ((6 * quantity) / 20);
             }
-            else if (schedules[1] != 0 && flag == 0)
+        }
+
+
+        private Dictionary<int,double> DesignerPrice(Random random)
+        {
+            Dictionary<int, double> dic = new Dictionary<int, double>();
+            int limit = random.Next(1, 5);
+            for(int x = 1; x <= limit; x++)
             {
-                return schedules[1];
+                dic.Add(x,random.Next(500, 8000001));
             }
-            else if(schedules[0] != 0)
-            {
-                return schedules[0];
-            }
-            else
-            {
-                return schedules[1];
-            }
+            return dic;
         }
 
         private string Name(Random random)
         {
             String name = "";
-            int limit = random.Next(4, 13);
-            name += (char)(random.Next(65,91));
-
-            for(int x = 0; x < limit; x++)
+            try
             {
-                name+= (char)(random.Next(97, 123));
+                int limit = random.Next(3, 13);
+                name += (char)(random.Next(65, 91));
+
+                for (int x = 0; x < limit; x++)
+                {
+                    name += (char)(random.Next(97, 123));
+                }
             }
+            catch { }
 
             return name;
         }
