@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Branch and bound\Branch.cs" />
+    <Compile Include="Branch and bound\BranchBound.cs" />
     <Compile Include="DataManagement.cs" />
     <Compile Include="Diagram classes\Designer.cs" />
     <Compile Include="Diagram classes\Ubication.cs" />
