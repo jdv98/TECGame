@@ -165,6 +165,7 @@ namespace TECGames
                                             Program.workList.ElementAt((work.Id-1)).Ubication = Program.ubicationList.ElementAt((ubication.Id - 1));
                                             Program.workList.ElementAt((work.Id-1)).Designers.Add(Program.designerList.ElementAt((designer.Id-1)));
                                             Program.workList.ElementAt(work.Id - 1).WorkSection = new WorkSection(work.Id,Name(random),x.Key);
+
                                             Program.designerList.ElementAt((designer.Id-1)).linked = true;
                                             Program.ubicationList.ElementAt((ubication.Id-1)).linked = true;
                                             Program.workList.ElementAt((work.Id - 1)).linked = true;
@@ -186,7 +187,7 @@ namespace TECGames
                         }
                         if (work.linked)
                         {
-                            work.Price();
+                            Program.workList.ElementAt(work.Id - 1).Price();
                             break;
                         }
                     }

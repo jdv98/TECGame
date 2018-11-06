@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TECGames.Diagram_classes;
+using TECGames.Branch_and_bound;
 
 namespace TECGames
 {
@@ -20,7 +21,7 @@ namespace TECGames
 
         static void Main(string[] args)
         {
-            int x = 1000;
+            int x = 200;
             DataManagement dG=new DataManagement(x);
             dG.DataCreator();
             Console.ReadKey();
@@ -40,8 +41,11 @@ namespace TECGames
 #if DEBUG
             Console.WriteLine("\n_____________________________________\nData couldn't be created \n\nworkList: {0}% \nubicationList: {1}% \ndesignerList: {2}%\n_____________________________________", (int)((( (double)x -(double)workList.Count) / (double)x) * ((double)100)), (int)((((double)x - (double)ubicationList.Count) / (double)x) * ((double)100)), (int)((((double)(2*x) - (double)designerList.Count) / (double)2*x) * ((double)100)));
             Console.WriteLine("\nTotal created data \n\nworkList={0} \nubicationList={1} \ndesignerList={2} \n_____________________________________", (double)workList.Count,ubicationList.Count, designerList.Count);
-            Console.ReadKey();
 #endif
+            Console.ReadKey();
+
+            //BranchBound bB = new BranchBound(10);
+
             Console.ReadKey();
         }
     }

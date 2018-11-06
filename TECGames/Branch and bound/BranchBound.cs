@@ -10,25 +10,45 @@ namespace TECGames.Branch_and_bound
     class BranchBound
     {
         public Work root=null;
+        private List<Work> lnv = new List<Work>();
+        double menor = 0;
+        int query = 0;int cont = 1;
 
-        public BranchBound()
+        public BranchBound(int query)
         {
+            this.query = query;
             foreach (Work work in Program.workList)
             {
                 if (root == null)
                 {
                     root = work;
                 }
-                else
+                else if(work.WorkSection!=null)
                 {
                     Assembler(root, work);
                 }
             }
-            root = Bound(root);
+            Lnv(root);
+            Console.WriteLine("menor: {0}\n\n\n",menor);
+            Print(root);
         }
 
         private void Assembler(Work root,Work nWork)
         {
+            if (menor == 0 && root.WorkSection.Price > nWork.WorkSection.Price)
+            {
+                menor = nWork.WorkSection.Price;
+            }
+            else if (menor == 0 && root.WorkSection.Price < nWork.WorkSection.Price)
+            {
+                menor = root.WorkSection.Price;
+            }
+            else if (menor>nWork.WorkSection.Price)
+            {
+                menor = nWork.WorkSection.Price;
+            }
+
+
             if (root.WorkSection.Price>nWork.WorkSection.Price && root.Left==null)
             {
                 root.Left = nWork;
@@ -53,13 +73,48 @@ namespace TECGames.Branch_and_bound
             {
                 Assembler(root.Right, nWork);
             }
-            return 0;
+            return ;
         }
 
-        private Work Bound(Work root)
+        private void Lnv(Work root)
         {
+            if (root== null)
+            {
+                return;
+            }
+            else if (root.Left==null && root.Right==null && query>=cont)
+            {
+                Console.WriteLine("Lnv: {0}     price: {1}",root.Id,root.WorkSection.Price);
+                lnv.Add(root);
+                cont++;
+                return;
+            }
+            else if (query<cont)
+            {
+                return;
+            }
+            else
+            {
+                Lnv(root.Left);
+                Lnv(root.Right);
+            }
+            return;
+        }
 
-            return root;
+        private void Print(Work root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            else
+            {
+                Console.Write("      Id: {0}  Price:{1}\nLeft= ",root.Id,root.WorkSection.Price);
+                Print(root.Left);
+                Console.Write("      Id: {0}  Price:{1}\nRight= ", root.Id, root.WorkSection.Price);
+                Print(root.Right);
+            }
+            return;
         }
     }
 }
