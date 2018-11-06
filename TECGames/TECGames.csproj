@@ -49,6 +49,7 @@
     <Compile Include="Diagram classes\Ubication.cs" />
     <Compile Include="Diagram classes\Work.cs" />
     <Compile Include="Diagram classes\WorkSection.cs" />
+    <Compile Include="Genetic Algorithm\GeneticAlgorithm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
