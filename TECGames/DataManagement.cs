@@ -142,7 +142,7 @@ namespace TECGames
             {
                 Console.Clear();
                 Console.WriteLine("Work: {0}", Program.workList.Count - (work.Id+1));
-                designers = random.Next(1, 4);
+                designers = random.Next(1, 2);
 
                 foreach(Ubication ubication in Program.ubicationList)
                 {
@@ -164,12 +164,13 @@ namespace TECGames
                                         {
                                             Program.workList.ElementAt((work.Id-1)).Ubication = Program.ubicationList.ElementAt((ubication.Id - 1));
                                             Program.workList.ElementAt((work.Id-1)).Designers.Add(Program.designerList.ElementAt((designer.Id-1)));
+                                            Program.workList.ElementAt(work.Id - 1).WorkSection = new WorkSection(work.Id,Name(random),x.Key);
                                             Program.designerList.ElementAt((designer.Id-1)).linked = true;
                                             Program.ubicationList.ElementAt((ubication.Id-1)).linked = true;
                                             Program.workList.ElementAt((work.Id - 1)).linked = true;
                                             designers--;
                                         }
-                                        else if (x.Key == y.Key)
+                                        else if (work.WorkSection!=null && x.Key == work.WorkSection.Schedule)
                                         {
                                             Program.workList.ElementAt((work.Id - 1)).Designers.Add(Program.designerList.ElementAt((designer.Id - 1)));
                                             Program.designerList.ElementAt((designer.Id - 1)).linked = true;
@@ -185,6 +186,7 @@ namespace TECGames
                         }
                         if (work.linked)
                         {
+                            work.Price();
                             break;
                         }
                     }

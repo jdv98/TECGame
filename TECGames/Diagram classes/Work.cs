@@ -42,5 +42,13 @@ namespace TECGames.Diagram_classes
             Ubication = ubication;
             WorkSection = workSection;
         }
+
+        public void Price()
+        {
+            foreach(Designer designer in Designers)
+            {
+                WorkSection.Price += designer.Price[WorkSection.Schedule];
+            }
+        }
     }
 }
