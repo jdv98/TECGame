@@ -10,16 +10,12 @@ namespace TECGames.Diagram_classes
     {
         private int id;
         private string name;
-        private int scheduleNocturnal;
-        private int scheduleDiurnal;
         private Dictionary<int, string> schedule = new Dictionary<int, string>();
         private String hexId = "";
         public bool linked = false;
 
         public int Id { get => id; set => id= value; }
         public string UbicationName{ get => name; set => name= value; }
-        public int ScheduleNocturnal { get => scheduleNocturnal; set => scheduleNocturnal = SN(value); }
-        public int ScheduleDiurnal { get => scheduleDiurnal; set => scheduleDiurnal = value; }
         public Dictionary<int,string> Schedule { get => schedule; set => schedule = value; }
         public string HexId { get => hexId; set => hexId = value; }
 
