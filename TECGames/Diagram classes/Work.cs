@@ -8,13 +8,14 @@ namespace TECGames.Diagram_classes
 {
     class Work
     {
-        private long id;
+        private int id;
         private List<Designer> designers = new List<Designer>();
-        private Ubication ubication;
-        private WorkSection workSection;
+        private Ubication ubication=null;
+        private WorkSection workSection=null;
         private String hexId = "";
+        public bool linked = false;
 
-        public long Id { get => id; set => id= value; }
+        public int Id { get => id; set => id= value; }
         public List<Designer> Designers { get => designers; set => designers= value; }
         public Ubication Ubication { get => ubication; set => ubication= value; }
         public WorkSection WorkSection { get => workSection; set => workSection= value; }
@@ -29,13 +30,13 @@ namespace TECGames.Diagram_classes
         {
         }
 
-        public Work(long id)
+        public Work(int id)
         {
             Id = id;
             HexId = Convert.ToString(id, 16);
         }
 
-        public Work(long id, List<Designer> designers, Ubication ubication, WorkSection workSection):this(id)
+        public Work(int id, List<Designer> designers, Ubication ubication, WorkSection workSection):this(id)
         {
             Designers = designers;
             Ubication = ubication;

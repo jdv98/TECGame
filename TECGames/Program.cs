@@ -20,10 +20,23 @@ namespace TECGames
 
         static void Main(string[] args)
         {
-            int x = 100000;
-                                             //7343282
-            DataGenerator dG=new DataGenerator(x);
-            dG.BranchBound();
+            int x = 1000;
+            DataManagement dG=new DataManagement(x);
+            dG.DataCreator();
+            Console.ReadKey();
+
+            Console.Clear();
+            Console.WriteLine("Linking data");
+            dG.Linker();
+            Console.Clear();
+            Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
+            GC.Collect();
+            dG.Dispose();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
+
+            Console.WriteLine("All data have been linked");
 #if DEBUG
             Console.WriteLine("\n_____________________________________\nData couldn't be created \n\nworkList: {0}% \nubicationList: {1}% \ndesignerList: {2}%\n_____________________________________", (int)((( (double)x -(double)workList.Count) / (double)x) * ((double)100)), (int)((((double)x - (double)ubicationList.Count) / (double)x) * ((double)100)), (int)((((double)x - (double)designerList.Count) / (double)x) * ((double)100)));
             Console.WriteLine("\nTotal created data \n\nworkList={0} \nubicationList={1} \ndesignerList={2} \n_____________________________________", (double)workList.Count,ubicationList.Count, designerList.Count);

@@ -8,14 +8,15 @@ namespace TECGames.Diagram_classes
 {
     class Ubication
     {
-        private long id;
+        private int id;
         private string name;
         private int scheduleNocturnal;
         private int scheduleDiurnal;
         private Dictionary<int, string> schedule = new Dictionary<int, string>();
         private String hexId = "";
+        public bool linked = false;
 
-        public long Id { get => id; set => id= value; }
+        public int Id { get => id; set => id= value; }
         public string UbicationName{ get => name; set => name= value; }
         public int ScheduleNocturnal { get => scheduleNocturnal; set => scheduleNocturnal = SN(value); }
         public int ScheduleDiurnal { get => scheduleDiurnal; set => scheduleDiurnal = value; }
@@ -26,7 +27,7 @@ namespace TECGames.Diagram_classes
         {
         }
 
-        public Ubication(long id, string ubicationName, int scheduleNocturnal,int scheduleDiurnal)
+        public Ubication(int id, string ubicationName, int scheduleNocturnal,int scheduleDiurnal)
         {
             Id = id;
             HexId = Convert.ToString(id, 16);

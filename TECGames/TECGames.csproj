@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Branch and bound\Branch.cs" />
-    <Compile Include="DataGenerator.cs" />
+    <Compile Include="DataManagement.cs" />
     <Compile Include="Diagram classes\Designer.cs" />
     <Compile Include="Diagram classes\Ubication.cs" />
     <Compile Include="Diagram classes\Work.cs" />
