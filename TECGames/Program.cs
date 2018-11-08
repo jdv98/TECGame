@@ -21,7 +21,7 @@ namespace TECGames
 
         static void Main(string[] args)
         {
-            int x = 10;
+            int x = 20;
             DataManagement dG=new DataManagement(x);
             dG.DataCreator();
             Console.ReadKey();

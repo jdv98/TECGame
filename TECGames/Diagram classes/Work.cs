@@ -21,8 +21,8 @@ namespace TECGames.Diagram_classes
         public WorkSection WorkSection { get => workSection; set => workSection= value; }
         public string HexId { get => hexId; set => hexId = value; }
 
-        private Work left;
-        private Work right;
+        private Work left=null;
+        private Work right=null;
         public Work Left { get => left; set => left = value; }
         public Work Right { get => right; set => right = value; }
 
@@ -41,6 +41,13 @@ namespace TECGames.Diagram_classes
             Designers = designers;
             Ubication = ubication;
             WorkSection = workSection;
+        }
+
+        public Work(int id, List<Designer> designers, Ubication ubication, WorkSection workSection, string hexId, Work left, Work right) : this(id, designers, ubication, workSection)
+        {
+            HexId = hexId;
+            Left = left;
+            Right = right;
         }
 
         public void Price()

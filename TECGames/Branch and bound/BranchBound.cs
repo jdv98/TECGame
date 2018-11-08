@@ -28,8 +28,15 @@ namespace TECGames.Branch_and_bound
                     Assembler(root, work);
                 }
             }
-            Lnv(root);
-            root=Ordenar(root);
+            Lnv(root); //Print(root);
+            Console.Write("\n\n\n\nMain= "); Print(root); Console.Write("\n\n\n\nMain= ");
+            root =Ordenar(root);
+
+            Console.Write("\n\n\n\nMain= "); Print(root);
+
+            cont = 0;
+            root = Bound(root);
+            Console.Write("\n\n\nBounded\nMain= "); Print(root);
         }
 
         private void Assembler(Work root,Work nWork)
@@ -96,11 +103,11 @@ namespace TECGames.Branch_and_bound
             }
             return;
         }
-
         private void Print(Work root)
         {
             if (root == null)
             {
+                Console.Write("null");
                 return;
             }
             else
@@ -112,37 +119,91 @@ namespace TECGames.Branch_and_bound
                 Console.Write("Price:{0}\nLeft= ",root.WorkSection.Price);
                 Print(root.Left);
 
-                Console.SetCursorPosition(7, Console.CursorTop);
-                Console.Write("Id: {0}", root.Id);
-                Console.SetCursorPosition(14, Console.CursorTop);
-                Console.Write("Price:{0}\nRight= ", root.WorkSection.Price);
+                Console.Write("\nId: {0}\nRight= ",root.Id);
                 Print(root.Right);
             }
             return;
         }
-
         private Work Ordenar(Work root)
         {
             if (root == null)
             {
                 return root;
             }
-            root.Left = Ordenar(root.Left);
-            root.Right = Ordenar(root.Right);
-
-            /*Right*/
-            if (root.WorkSection.Price>this.root.WorkSection.Price)
+            if (root.Left != null)
             {
-                /*if ()
-                {
-
-                }*/
+                Console.WriteLine("Actual={1} Left={0}", root.Left.Id, root.Id);
             }
-            /*Left*/
             else
             {
-
+                Console.WriteLine("Actual={1} Left={0}", "null", root.Id);
             }
+            root.Left = Ordenar(root.Left);
+            if (root.Right != null)
+            {
+                Console.WriteLine("Actual={1} Right={0}", root.Right.Id, root.Id);
+            }
+            else
+            {
+                Console.WriteLine("Actual={1} Right={0}", "null",root.Id);
+            }
+            root.Right = Ordenar(root.Right);
+            Console.WriteLine("Procesando actual={0}", root.Id);
+
+
+            /**************************************************************/
+            if (root.WorkSection.Price > this.root.WorkSection.Price && root.Left != null)
+            {
+                Work temp = new Work(root.Id, root.Designers, root.Ubication, root.WorkSection, root.HexId, root.Left, root.Right);
+                temp.Left = null;
+                root = InsertWork(root.Left, temp, true);
+            }
+            else if (root.WorkSection.Price<this.root.WorkSection.Price && root.Right!=null)
+            {
+                Work temp = new Work(root.Id,root.Designers,root.Ubication,root.WorkSection,root.HexId,root.Left,root.Right);
+                temp.Right = null;
+                root = InsertWork(root.Right, temp, false);
+            }
+
+            return root;
+        }
+        private Work InsertWork(Work root,Work rooToInsert,bool right)
+        {
+            if (root == null)
+            {
+                return rooToInsert;
+            }
+            else if (right)
+            {
+                root.Right = InsertWork(root.Right,rooToInsert,right);
+            }
+            else if (!right)
+            {
+                root.Left = InsertWork(root.Left,rooToInsert,right);
+            }
+            return root;
+        }
+
+        private Work Bound(Work root)
+        {
+            if (cont == lnv.Count - 1)
+            {
+                root.Right = null;
+                return root;
+            }
+            try
+            {
+                root = Bound(root.Left);
+            }
+            catch { }
+            try
+            {
+                root = Bound(root.Right);
+            }
+            catch { }
+            
+            cont++;
+            
 
             return root;
         }
