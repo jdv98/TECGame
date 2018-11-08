@@ -12,7 +12,7 @@ namespace TECGames.Branch_and_bound
         public Work root=null;
         private List<Work> lnv = new List<Work>();
         double menor = 0;
-        int query = 0;int cont = 1;
+        int query = 0;int cont = 0;
 
         public BranchBound(int query)
         {
@@ -29,8 +29,7 @@ namespace TECGames.Branch_and_bound
                 }
             }
             Lnv(root);
-            Console.WriteLine("menor: {0}\n\n\n",menor);
-            Print(root);
+            root=Ordenar(root);
         }
 
         private void Assembler(Work root,Work nWork)
@@ -75,27 +74,24 @@ namespace TECGames.Branch_and_bound
             }
             return ;
         }
-
         private void Lnv(Work root)
         {
-            if (root== null)
+            if (root== null || cont==query)
             {
                 return;
             }
             else if (root.Left==null && root.Right==null && query>=cont)
             {
-                Console.WriteLine("Lnv: {0}     price: {1}",root.Id,root.WorkSection.Price);
                 lnv.Add(root);
                 cont++;
-                return;
-            }
-            else if (query<cont)
-            {
                 return;
             }
             else
             {
                 Lnv(root.Left);
+                lnv.Add(root);
+                cont++;
+
                 Lnv(root.Right);
             }
             return;
@@ -109,12 +105,46 @@ namespace TECGames.Branch_and_bound
             }
             else
             {
-                Console.Write("      Id: {0}  Price:{1}\nLeft= ",root.Id,root.WorkSection.Price);
+
+                Console.SetCursorPosition(7, Console.CursorTop);
+                Console.Write("Id: {0}",root.Id);
+                Console.SetCursorPosition(14, Console.CursorTop);
+                Console.Write("Price:{0}\nLeft= ",root.WorkSection.Price);
                 Print(root.Left);
-                Console.Write("      Id: {0}  Price:{1}\nRight= ", root.Id, root.WorkSection.Price);
+
+                Console.SetCursorPosition(7, Console.CursorTop);
+                Console.Write("Id: {0}", root.Id);
+                Console.SetCursorPosition(14, Console.CursorTop);
+                Console.Write("Price:{0}\nRight= ", root.WorkSection.Price);
                 Print(root.Right);
             }
             return;
+        }
+
+        private Work Ordenar(Work root)
+        {
+            if (root == null)
+            {
+                return root;
+            }
+            root.Left = Ordenar(root.Left);
+            root.Right = Ordenar(root.Right);
+
+            /*Right*/
+            if (root.WorkSection.Price>this.root.WorkSection.Price)
+            {
+                /*if ()
+                {
+
+                }*/
+            }
+            /*Left*/
+            else
+            {
+
+            }
+
+            return root;
         }
     }
 }

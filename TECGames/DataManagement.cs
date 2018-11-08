@@ -138,7 +138,7 @@ namespace TECGames
             random = new Random(random.Next(10,1001)*random.Next(50,5001));
             int designers = 0;
 
-            foreach(Work work in Program.workList)
+            foreach (Work work in Program.workList)
             {
                 Console.Clear();
                 Console.WriteLine("Work: {0}", Program.workList.Count - (work.Id+1));
@@ -151,8 +151,6 @@ namespace TECGames
                     {
                         foreach (Designer designer in Program.designerList)
                         {
-                            //Console.WriteLine("designer.Id: {0}", cont);
-                            //cont--;
                             /*__________________________________________________*/
                             if (!designer.linked && designers>0)
                             {
@@ -165,8 +163,7 @@ namespace TECGames
                                             Program.workList.ElementAt((work.Id-1)).Ubication = Program.ubicationList.ElementAt((ubication.Id - 1));
                                             Program.workList.ElementAt((work.Id-1)).Designers.Add(Program.designerList.ElementAt((designer.Id-1)));
                                             Program.workList.ElementAt(work.Id - 1).WorkSection = new WorkSection(work.Id,Name(random),x.Key);
-
-                                            Program.designerList.ElementAt((designer.Id-1)).linked = true;
+                                            
                                             Program.ubicationList.ElementAt((ubication.Id-1)).linked = true;
                                             Program.workList.ElementAt((work.Id - 1)).linked = true;
                                             designers--;
@@ -174,7 +171,6 @@ namespace TECGames
                                         else if (work.WorkSection!=null && x.Key == work.WorkSection.Schedule)
                                         {
                                             Program.workList.ElementAt((work.Id - 1)).Designers.Add(Program.designerList.ElementAt((designer.Id - 1)));
-                                            Program.designerList.ElementAt((designer.Id - 1)).linked = true;
                                             designers--;
                                         }
                                     }
