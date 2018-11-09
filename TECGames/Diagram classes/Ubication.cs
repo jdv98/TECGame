@@ -11,17 +11,13 @@ namespace TECGames.Diagram_classes
         private int id;
         private string name;
         private Dictionary<int, string> schedule = new Dictionary<int, string>();
-        private String hexId = "";
+        private String hexId = "";      //posible a eliminar
         public bool linked = false;
 
         public int Id { get => id; set => id= value; }
         public string UbicationName{ get => name; set => name= value; }
         public Dictionary<int,string> Schedule { get => schedule; set => schedule = value; }
         public string HexId { get => hexId; set => hexId = value; }
-
-        public Ubication()
-        {
-        }
 
         public Ubication(int id, string ubicationName, int scheduleNocturnal,int scheduleDiurnal)
         {

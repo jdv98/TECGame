@@ -157,13 +157,13 @@ namespace TECGames.Branch_and_bound
             /**************************************************************/
             if (root.WorkSection.Price > this.root.WorkSection.Price && root.Left != null)
             {
-                Work temp = new Work(root.Id, root.Designers, root.Ubication, root.WorkSection, root.HexId, root.Left, root.Right);
+                Work temp = root.Copy();
                 temp.Left = null;
                 root = InsertWork(root.Left, temp, true);
             }
             else if (root.WorkSection.Price<this.root.WorkSection.Price && root.Right!=null)
             {
-                Work temp = new Work(root.Id,root.Designers,root.Ubication,root.WorkSection,root.HexId,root.Left,root.Right);
+                Work temp = root.Copy();
                 temp.Right = null;
                 root = InsertWork(root.Right, temp, false);
             }

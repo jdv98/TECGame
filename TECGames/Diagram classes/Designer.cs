@@ -13,7 +13,7 @@ namespace TECGames.Diagram_classes
         private string name;
         private Dictionary<int, double> price;
         private int workSection;
-        private String hexId = "";
+        private String hexId = "";  //posible a eliminar
         public bool linked = false;
 
 
@@ -23,9 +23,6 @@ namespace TECGames.Diagram_classes
         public int WorkSection { get => workSection; set => workSection = value; }
         public string HexId { get => hexId; set => hexId = value; }
 
-        public Designer()
-        {
-        }
         public Designer(int id)
         {
             Id = id;
@@ -38,14 +35,13 @@ namespace TECGames.Diagram_classes
             Price = price;
         }
 
-        public Designer(int id, string name, Dictionary<int, double> price, int workSection) : this(id, name, price)
+        /*public Designer(int id, string name, Dictionary<int, double> price, int workSection) : this(id, name, price)
         {
             WorkSection = workSection;
-        }
+        }*/         //posible a eliminar
 
         public void Dispose()
         {
-            GC.Collect();
             GC.SuppressFinalize(this);
         }
     }
