@@ -35,7 +35,7 @@ namespace TECGames.Branch_and_bound
             Console.Write("\n\n\n\nMain= "); Print(root);
 
             cont = 0;
-            root = Bound(root);
+            root = Bound(root,root);
             Console.Write("\n\n\nBounded\nMain= "); Print(root);
         }
 
@@ -96,10 +96,13 @@ namespace TECGames.Branch_and_bound
             else
             {
                 Lnv(root.Left);
-                lnv.Add(root);
-                cont++;
-
                 Lnv(root.Right);
+
+                if (cont != query)
+                {
+                    lnv.Add(root);
+                    cont++;
+                }
             }
             return;
         }
@@ -183,29 +186,38 @@ namespace TECGames.Branch_and_bound
             }
             return root;
         }
-
-        private Work Bound(Work root)
+        private Work Bound(Work root,Work previousRoot)
         {
-            if (cont == lnv.Count - 1)
+            bool counted = false;
+            if (root!=null && cont != query && root.WorkSection.Price<=this.root.WorkSection.Price)
             {
-                root.Right = null;
-                return root;
+                root = Bound(root.Left,root);
+                if (!counted && cont != query)
+                {
+                    counted = true;
+                    cont++;
+                }
+                if (cont == query)
+                {
+                    return root;
+                }
             }
-            try
+            if(root != null && cont != query && root.WorkSection.Price >= this.root.WorkSection.Price)
             {
-                root = Bound(root.Left);
+                if (!counted && cont != query)
+                {
+                    counted = true;
+                    cont++;
+                }
+                if (cont == query)
+                {
+                    root.Right = null;
+                    return root;
+                }
+                root.Right = Bound(root.Right, root.Right);
             }
-            catch { }
-            try
-            {
-                root = Bound(root.Right);
-            }
-            catch { }
-            
-            cont++;
-            
 
-            return root;
+            return previousRoot;
         }
     }
 }

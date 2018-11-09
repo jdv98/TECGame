@@ -21,7 +21,7 @@ namespace TECGames
 
         static void Main(string[] args)
         {
-            int x = 20;
+            int x = 10;
             DataManagement dG=new DataManagement(x);
             dG.DataCreator();
             Console.ReadKey();
@@ -44,7 +44,7 @@ namespace TECGames
 #endif
             Console.ReadKey();
 
-            BranchBound bB = new BranchBound(10);
+            BranchBound bB = new BranchBound(4);
 
             Console.ReadKey();
         }
