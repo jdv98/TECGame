@@ -29,16 +29,20 @@ namespace TECGames.Branch_and_bound
                 }
             }
             Lnv(root); //Print(root);
-            Console.Write("\n\n\n\nMain= "); Print(root); Console.Write("\n\n\n\nMain= ");
-            root =Ordenar(root);
+            Console.Write("\n\n\n_________________________________\nUnorganized\n_________________________________\nMain= ");
+            Print(root);
 
-            Console.Write("\n\n\n\nMain= "); Print(root);
+            Console.Write("\n\n\n_________________________________\nOrganization process\n_________________________________\nMain= ");
+            root =Organizer(root);
+
+            Console.Write("\n\n\n_________________________________\nOrganized\n_________________________________\nMain= "); Print(root);
 
             cont = 0;
             root = Bound(root,root);
-            Console.Write("\n\n\nBounded\nMain= "); Print(root);
+            Console.Write("\n\n\n_________________________________\nOrganized and bounded\n_________________________________\nMain= "); Print(root);
         }
 
+        /*Conditionals to make the branching*/
         private void Assembler(Work root,Work nWork)
         {
             if (menor == 0 && root.WorkSection.Price > nWork.WorkSection.Price)
@@ -81,6 +85,8 @@ namespace TECGames.Branch_and_bound
             }
             return ;
         }
+
+        /*Makes the list of the alives nodes*/  ///revisar
         private void Lnv(Work root)
         {
             if (root== null || cont==query)
@@ -106,7 +112,10 @@ namespace TECGames.Branch_and_bound
             }
             return;
         }
+
+        /*It just prints the nodes*/
         private void Print(Work root)
+
         {
             if (root == null)
             {
@@ -127,7 +136,9 @@ namespace TECGames.Branch_and_bound
             }
             return;
         }
-        private Work Ordenar(Work root)
+
+        /*Reconstructs the order of the nodes to make easier the bounding*/
+        private Work Organizer(Work root)
         {
             if (root == null)
             {
@@ -141,7 +152,7 @@ namespace TECGames.Branch_and_bound
             {
                 Console.WriteLine("Actual={1} Left={0}", "null", root.Id);
             }
-            root.Left = Ordenar(root.Left);
+            root.Left = Organizer(root.Left);
             if (root.Right != null)
             {
                 Console.WriteLine("Actual={1} Right={0}", root.Right.Id, root.Id);
@@ -150,7 +161,7 @@ namespace TECGames.Branch_and_bound
             {
                 Console.WriteLine("Actual={1} Right={0}", "null",root.Id);
             }
-            root.Right = Ordenar(root.Right);
+            root.Right = Organizer(root.Right);
             Console.WriteLine("Procesando actual={0}", root.Id);
 
 
@@ -170,6 +181,11 @@ namespace TECGames.Branch_and_bound
 
             return root;
         }
+
+        /*
+         *Complement in the Organizer function :
+         *It just inserts a specific node at the end of another node's children
+         */
         private Work InsertWork(Work root,Work rooToInsert,bool right)
         {
             if (root == null)
@@ -186,6 +202,8 @@ namespace TECGames.Branch_and_bound
             }
             return root;
         }
+
+        /*Returns the branching bounded*/
         private Work Bound(Work root,Work previousRoot)
         {
             bool counted = false;

@@ -32,10 +32,7 @@ namespace TECGames
             dG.Linker();
             Console.Clear();
             Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
-            GC.Collect();
-            dG.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+
             Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
 
             Console.WriteLine("All data have been linked");
@@ -45,7 +42,7 @@ namespace TECGames
 #endif
             Console.ReadKey();
 
-            BranchBound bB = new BranchBound(4);
+            BranchBound bB = new BranchBound(1);
             Console.ReadKey();
         }
     }

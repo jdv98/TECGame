@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace TECGames.Diagram_classes
 {
-    class Designer : IDisposable
+    class Designer //: IDisposable
     {
         private int id;
         private string name;
@@ -38,11 +38,11 @@ namespace TECGames.Diagram_classes
         /*public Designer(int id, string name, Dictionary<int, double> price, int workSection) : this(id, name, price)
         {
             WorkSection = workSection;
-        }*/         //posible a eliminar
+        }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-        }
+        }*/         //posible a eliminar
     }
 }

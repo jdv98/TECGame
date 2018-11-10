@@ -32,6 +32,7 @@ namespace TECGames.Diagram_classes
             HexId = Convert.ToString(id, 16);
         }
 
+        /*return a copy of work*/
         public Work Copy()
         {
             return (Work)base.MemberwiseClone();
