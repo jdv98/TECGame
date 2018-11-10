@@ -153,11 +153,17 @@ namespace TECGames.Genetic_Algorithm
                 {
 
                     // Offspring (two new instances of work combining attributes of their parents):
-                    Work offspring1 = new Work(0, tuple.Item1.Designers, tuple.Item2.Ubication, new WorkSection(0, "", tuple.Item1.WorkSection.Schedule));
+                    Work offspring1 = new Work(0);
+                    offspring1.Designers = tuple.Item1.Designers;
+                    offspring1.Ubication = tuple.Item2.Ubication;
+                    offspring1.WorkSection = new WorkSection(0, "", tuple.Item1.WorkSection.Schedule);
                     offspring1.WorkSection.Price = 0;
                     offspring1.Price();
 
-                    Work offspring2 = new Work(0, tuple.Item2.Designers, tuple.Item1.Ubication, new WorkSection(0, "", tuple.Item2.WorkSection.Schedule));
+                    Work offspring2 = new Work(0);
+                    offspring2.Designers = tuple.Item2.Designers;
+                    offspring2.Ubication = tuple.Item1.Ubication;
+                    offspring2.WorkSection = new WorkSection(0, "", tuple.Item2.WorkSection.Schedule);
                     offspring2.WorkSection.Price = 0;
                     offspring2.Price();
 

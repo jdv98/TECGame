@@ -44,6 +44,8 @@ namespace TECGames
 
             BranchBound bB = new BranchBound(10);
 
+            GeneticAlgorithm gA = new GeneticAlgorithm();
+
             Console.ReadKey();
         }
     }
