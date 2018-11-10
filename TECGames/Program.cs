@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using TECGames.Diagram_classes;
 using TECGames.Branch_and_bound;
+using TECGames.Genetic_Algorithm;
 
 namespace TECGames
 {
@@ -45,7 +46,7 @@ namespace TECGames
             Console.ReadKey();
 
             BranchBound bB = new BranchBound(10);
-
+            GeneticAlgorithm gA = new GeneticAlgorithm(); 
             Console.ReadKey();
         }
     }
