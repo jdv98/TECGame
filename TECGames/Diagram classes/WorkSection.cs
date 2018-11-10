@@ -21,10 +21,6 @@ namespace TECGames.Diagram_classes
         public int Schedule { get => schedule; set => schedule = value; }
         public string HexId { get => hexId; set => hexId = value; }
 
-        public WorkSection()
-        {
-        }
-
         public WorkSection(int id, string name, int schedule)
         {
             Id = id;

@@ -21,7 +21,7 @@ namespace TECGames
             this.quantity = quantity;
         }
 
-        /*      Create data to fill the lists      */
+        /*Creates data in parallel to fill the global lists*/
         public void DataCreator()
         {
             random = new Random((int)Math.Pow(DateTime.Now.Millisecond, total) + random.Next(10, 5000) * random.Next(1, 10));
@@ -39,6 +39,8 @@ namespace TECGames
             Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
         }
 
+        /****************************************************/
+        /*Segment of functions that creates Designers, works and ubication separately*/
         private void CreateDesigner()
         {
             try { 
@@ -91,6 +93,9 @@ namespace TECGames
 #endif
             }
         }
+        /****************************************************/
+
+        /*Prints the percent of data that have been created*/
         private void Percent()
         {
             if (total >= cont || total==quantity)
@@ -101,6 +106,8 @@ namespace TECGames
                 cont += ((6 * quantity) / 20);
             }
         }
+
+        /*Insert the payment that the designer wants for a determinate schedule*/
         private Dictionary<int,double> DesignerPrice(Random random)
         {
             Dictionary<int, double> dic = new Dictionary<int, double>();
@@ -111,6 +118,8 @@ namespace TECGames
             }
             return dic;
         }
+
+        /*Creates a random name of 4 to 13 letters*/
         private string Name(Random random)
         {
             String name = "";
@@ -200,26 +209,5 @@ namespace TECGames
             }
         }
 
-        public void Unlinker()
-        {
-            for (int wIndex = 0; wIndex < Program.workList.Count; wIndex++)
-            {
-                Program.workList.ElementAt(wIndex).linked = false;
-            }
-            for (int uIndex = 0; uIndex < Program.ubicationList.Count; uIndex++)
-            {
-                Program.ubicationList.ElementAt(uIndex).linked = false;
-            }
-            for (int dIndex = 0; dIndex < Program.designerList.Count; dIndex++)
-            {
-                Program.designerList.ElementAt(dIndex).linked = false;
-            }
-        }
-
-        public void Dispose()
-        {
-            GC.Collect();
-            GC.SuppressFinalize(this);
-        }
     }
 }

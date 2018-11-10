@@ -12,7 +12,7 @@ namespace TECGames.Diagram_classes
         private List<Designer> designers = new List<Designer>();
         private Ubication ubication=null;
         private WorkSection workSection=null;
-        private String hexId = "";
+        private String hexId = "";  //posible a eliminar
         public bool linked = false;
 
         public int Id { get => id; set => id= value; }
@@ -26,28 +26,16 @@ namespace TECGames.Diagram_classes
         public Work Left { get => left; set => left = value; }
         public Work Right { get => right; set => right = value; }
 
-        public Work()
-        {
-        }
-
         public Work(int id)
         {
             Id = id;
             HexId = Convert.ToString(id, 16);
         }
 
-        public Work(int id, List<Designer> designers, Ubication ubication, WorkSection workSection):this(id)
+        /*return a copy of work*/
+        public Work Copy()
         {
-            Designers = designers;
-            Ubication = ubication;
-            WorkSection = workSection;
-        }
-
-        public Work(int id, List<Designer> designers, Ubication ubication, WorkSection workSection, string hexId, Work left, Work right) : this(id, designers, ubication, workSection)
-        {
-            HexId = hexId;
-            Left = left;
-            Right = right;
+            return (Work)base.MemberwiseClone();
         }
 
         public void Price()

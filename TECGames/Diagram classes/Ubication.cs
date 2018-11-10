@@ -11,17 +11,13 @@ namespace TECGames.Diagram_classes
         private int id;
         private string name;
         private Dictionary<int, string> schedule = new Dictionary<int, string>();
-        private String hexId = "";
+        private String hexId = "";      //posible a eliminar
         public bool linked = false;
 
         public int Id { get => id; set => id= value; }
         public string UbicationName{ get => name; set => name= value; }
         public Dictionary<int,string> Schedule { get => schedule; set => schedule = value; }
         public string HexId { get => hexId; set => hexId = value; }
-
-        public Ubication()
-        {
-        }
 
         public Ubication(int id, string ubicationName, int scheduleNocturnal,int scheduleDiurnal)
         {
@@ -31,6 +27,7 @@ namespace TECGames.Diagram_classes
             SetSchedule(scheduleNocturnal, scheduleDiurnal);
         }
 
+        /*Inserts information in the schedule list and confirms that it's not empty*/
         private void SetSchedule(int nocturnal, int diurnal)
         {
             Random x = new Random(DateTime.Now.Millisecond);
@@ -65,20 +62,18 @@ namespace TECGames.Diagram_classes
                 Schedule.Add(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]);
             }
         }
-        
+
+        /*The constructor gets a number from 0 to 2, but the nocturnal schedule works with 3 and 4, so this function just convert it*/
         private int SN(int x)
         {
-            if (x == 0)
+            switch (x)
             {
-                return 0;
-            }
-            else if (x == 1)
-            {
-                return 3;
-            }
-            else
-            {
-                return 4;
+                case 1:
+                    return 3;
+                case 2:
+                    return 4;
+                default:
+                    return 0;
             }
         }
     }
