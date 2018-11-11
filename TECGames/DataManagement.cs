@@ -24,16 +24,16 @@ namespace TECGames
         /*Creates data in parallel to fill the global lists*/
         public void DataCreator()
         {
-            random = new Random((int)Math.Pow(DateTime.Now.Millisecond, total) + random.Next(10, 5000) * random.Next(1, 10));
+            random = new Random(random.Next(DateTime.Now.Millisecond, 5000 * (int)DateTime.Now.Millisecond) * random.Next(10, 5000));
             try
             {
                 Parallel.Invoke(CreateDesigner, CreateUbication, CreateWork);
             }
             catch
             {
-                #if DEBUG
+#if DEBUG
                 Console.WriteLine("BTotal: {0}   Memory usage: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
-                #endif
+#endif
             }
             Console.Clear();
             Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
@@ -43,13 +43,14 @@ namespace TECGames
         /*Segment of functions that creates Designers, works and ubication separately*/
         private void CreateDesigner()
         {
-            try { 
-                for (int counter = 0; counter < 2*quantity; counter++)
+            try
+            {
+                for (int counter = 0; counter < 2 * quantity; counter++)
                 {
                     Percent();
 
-                    Program.designerList.Add(new Designer(Program.designerList.Count + 1, Name(random), DesignerPrice(random)));
-                    total++; 
+                    Program.designerList.Add(new Designer(Program.designerList.Count + 1, "Name" + (Program.designerList.Count + 1).ToString(), DesignerPrice(random)));
+                    total++;
                 }
             }
             catch
@@ -82,7 +83,7 @@ namespace TECGames
             {
                 for (int counter = 0; counter < quantity; counter++)
                 {
-                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, Name(random), random.Next(0, 3), random.Next(0, 3)));
+                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, "Name" + (Program.ubicationList.Count + 1).ToString(), random.Next(0, 3), random.Next(0, 3)));
                     total++;
                 }
             }
@@ -98,23 +99,23 @@ namespace TECGames
         /*Prints the percent of data that have been created*/
         private void Percent()
         {
-            if (total >= cont || total==quantity)
+            if (total >= cont || total == quantity)
             {
                 Console.Clear();
-                double temp = (((double)total)/(((double)3) * ((double)2*(double)quantity)))*((double)100);
-                Console.WriteLine("Data created: {0}%       Memory usage: {1}MB", (int)temp,(System.GC.GetTotalMemory(true)/ 1000000));
+                double temp = (((double)total) / (((double)3) * ((double)2 * (double)quantity))) * ((double)100);
+                Console.WriteLine("Data created: {0}%       Memory usage: {1}MB", (int)temp, (System.GC.GetTotalMemory(true) / 1000000));
                 cont += ((6 * quantity) / 20);
             }
         }
 
         /*Insert the payment that the designer wants for a determinate schedule*/
-        private Dictionary<int,double> DesignerPrice(Random random)
+        private Dictionary<int, double> DesignerPrice(Random random)
         {
             Dictionary<int, double> dic = new Dictionary<int, double>();
             int limit = random.Next(1, 5);
-            for(int x = 1; x <= limit; x++)
+            for (int x = 1; x <= limit; x++)
             {
-                dic.Add(x,random.Next(500, 8000001));
+                dic.Add(x, random.Next(500, 8000001));
             }
             return dic;
         }
@@ -138,65 +139,53 @@ namespace TECGames
             return name;
         }
 
-        
-        
         /*      it associates data      */
         public void Linker()
         {
-            Random random = new Random(DateTime.Now.Millisecond);
-            random = new Random(random.Next(10,1001)*random.Next(50,5001));
-            int designers = 0;
+            int indexLinkDesigner = 0; ;
+            bool added;
 
             foreach (Work work in Program.workList)
             {
                 Console.Clear();
-                Console.WriteLine("Work: {0}", Program.workList.Count - (work.Id+1));
-                designers = random.Next(1, 2);
+                Console.WriteLine("Work: {0}", Program.workList.Count - (work.Id + 1));
 
-                foreach(Ubication ubication in Program.ubicationList)
+                foreach (Ubication ubication in Program.ubicationList)
                 {
                     int cont = Program.designerList.Count;
                     if (!ubication.linked)
                     {
-                        foreach (Designer designer in Program.designerList)
+
+                        for (int designerIndex = 0; designerIndex < 2; designerIndex++)
                         {
-                            /*__________________________________________________*/
-                            if (!designer.linked && designers>0)
+                            added = false;
+                            while (!added)
                             {
-                                foreach (KeyValuePair<int, double> x in designer.Price)
+                                indexLinkDesigner = random.Next(0, Program.designerList.Count);
+                                foreach (KeyValuePair<int, double> x in Program.designerList[indexLinkDesigner].Price)
                                 {
                                     foreach (KeyValuePair<int, string> y in ubication.Schedule)
                                     {
                                         if (x.Key == y.Key && work.Ubication == null)
                                         {
-                                            Program.workList.ElementAt((work.Id-1)).Ubication = Program.ubicationList.ElementAt((ubication.Id - 1));
-                                            Program.workList.ElementAt((work.Id-1)).Designers.Add(Program.designerList.ElementAt((designer.Id-1)));
-                                            Program.workList.ElementAt(work.Id - 1).WorkSection = new WorkSection(work.Id,Name(random),x.Key);
-                                            
-                                            /*temp*/
-                                            Program.designerList.ElementAt(designer.Id - 1).linked = true;
-                                            /*temp*/
-
-                                            Program.ubicationList.ElementAt((ubication.Id-1)).linked = true;
+                                            Program.workList.ElementAt((work.Id - 1)).Ubication = Program.ubicationList.ElementAt((ubication.Id - 1));
+                                            Program.workList.ElementAt((work.Id - 1)).Designers.Add(Program.designerList.ElementAt((indexLinkDesigner)));
+                                            Program.workList.ElementAt(work.Id - 1).WorkSection = new WorkSection(work.Id, Name(random), x.Key);
+                                            Program.designerList.ElementAt(indexLinkDesigner).linked = true;
+                                            Program.ubicationList.ElementAt((ubication.Id - 1)).linked = true;
                                             Program.workList.ElementAt((work.Id - 1)).linked = true;
-                                            designers--;
+                                            added = true;
                                         }
-                                        else if (work.WorkSection!=null && x.Key == work.WorkSection.Schedule)
+                                        else if (work.WorkSection != null && x.Key == work.WorkSection.Schedule && !Program.designerList[indexLinkDesigner].linked)
                                         {
-                                            /*temp*/
-                                            Program.designerList.ElementAt(designer.Id - 1).linked = true;
-                                            /*temp*/
-
-                                            Program.workList.ElementAt((work.Id - 1)).Designers.Add(Program.designerList.ElementAt((designer.Id - 1)));
-                                            designers--;
+                                            Program.designerList.ElementAt(indexLinkDesigner).linked = true;
+                                            Program.workList.ElementAt((work.Id - 1)).Designers.Add(Program.designerList.ElementAt((indexLinkDesigner)));
+                                            added = true;
                                         }
                                     }
                                 }
                             }
-                            else if (designers == 0)
-                            {
-                                break;
-                            }
+                            Program.designerList.ElementAt(indexLinkDesigner).linked = false;
                         }
                         if (work.linked)
                         {
@@ -204,7 +193,7 @@ namespace TECGames
                             break;
                         }
                     }
-                    
+
                 }
             }
         }

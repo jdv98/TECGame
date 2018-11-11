@@ -61,6 +61,10 @@ namespace TECGames.Diagram_classes
             {
                 Schedule.Add(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]);
             }
+            else if (flagN && flagD)
+            {
+                Schedule.Add(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]);
+            }
         }
 
         /*The constructor gets a number from 0 to 2, but the nocturnal schedule works with 3 and 4, so this function just convert it*/
