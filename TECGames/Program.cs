@@ -169,14 +169,16 @@ namespace TECGames
         long dataAmount = 0;
         long comparations = 0;
         long assignments = 0;
+        long executedLines = 0;
         long timeMilisecond = 0;
 
-        public Result(string algorithm, long dataAmount, long comparations, long assignments, long timeMilisecond)
+        public Result(string algorithm, long dataAmount, long comparations, long assignments, long executedLines, long timeMilisecond)
         {
             this.algorithm = algorithm;
             this.dataAmount = dataAmount;
             this.comparations = comparations;
             this.assignments = assignments;
+            this.executedLines = executedLines;
             this.timeMilisecond = timeMilisecond;
         }
 
@@ -187,8 +189,9 @@ namespace TECGames
                     "__________________\n" +
                     "Amount of data: "+ this.dataAmount + 
                     "\nComparations: "+ this.comparations + 
-                    "\nAssignments: "+ this.assignments + 
-                    "\nTime: "+ this.timeMilisecond;
+                    "\nAssignments: "+ this.assignments +
+                    "\nExecuted lines: " + this.executedLines +
+                    "\nTime: " + this.timeMilisecond;
         }
     }
 }
