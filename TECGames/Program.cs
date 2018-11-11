@@ -35,10 +35,39 @@ namespace TECGames
                 }
                 else
                 {
-
+                    for(;x<numberTest;x++)
+                    {
+                        if(0<=x && x < 10)
+                        {
+                            Execution(10);
+                        }
+                        else if(10<=x && x <20 )
+                        {
+                            Execution(20);
+                        }
+                        else if (20 <= x && x <30 )
+                        {
+                            Execution(50);
+                        }
+                        else if (30 <= x && x <40 )
+                        {
+                            Execution(100);
+                        }
+                        else if (40 <= x && x < 50)
+                        {
+                            Execution(200);
+                        }
+                        else if ( 50<= x && x < 60)
+                        {
+                            Execution(500);
+                        }
+                        else if (60 <= x && x < 70)
+                        {
+                            Execution(1000);
+                        }
+                    }
+                    testMode = false;
                 }
-
-
 
                 Console.Clear();
                 Console.Write("Y->Exit      N->Continue\nSelection: ");
@@ -47,30 +76,8 @@ namespace TECGames
                 {
                     keepIn = false;
                 }
-                Console.Clear(); ResetList();
+                Console.Clear();
             }
-
-
-
-
-
- /*           dG.DataCreator();
-            Console.ReadKey();
-
-
-            Console.Clear();
-
-            Console.WriteLine("All data have been linked");
-
-            Console.ReadKey();
-
-            BranchBound bB = new BranchBound(10);
-            Console.ReadKey();
-            Console.Clear();
-
-            GeneticAlgorithm gA = new GeneticAlgorithm(4000);
-
-            Console.ReadKey();*/
         }
 
         static void Execution(int x)
@@ -101,8 +108,15 @@ namespace TECGames
 
 
             Console.WriteLine("_____________________________________\nGenetic algorithm\n_____________________________________\n");
-            GeneticAlgorithm gA = new GeneticAlgorithm(100);
+            try
+            {
+                GeneticAlgorithm gA = new GeneticAlgorithm(100);
+            }
+            catch { }
             Console.ReadKey();
+            Console.Clear();
+            ResetList();
+            GC.WaitForPendingFinalizers();
         }
 
         static int Menu1()
