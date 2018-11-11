@@ -15,61 +15,8 @@ namespace TECGames.Genetic_Algorithm
         //List to contein valid works to start genetic algorithm.
         public List<Work> works = new List<Work>();
 
-        //List to contein the actual generation.
-        public List<Tuple<Work, Work>> actualGeneration = new List<Tuple<Work, Work>>();
-
-
-        //Contructor of n quantity generations that is recommended to get a real minimization on price.
-        public GeneticAlgorithm()
-        {
-            Console.Clear();
-            //Load data (works)
-            foreach (Work w in Program.workList)
-            {
-                if (w.WorkSection != null)
-                {
-                    works.Add(w);
-                }
-            }
-
-            int flag = -1;
-            do
-            {
-                Courtship(works);
-                 
-                if (flag == -1)
-                {
-                    flag = actualGeneration.Count;
-                    Console.WriteLine("PARENTS: parent 1 <-> parent 2 \n");
-                    foreach (Tuple<Work, Work> tuple in actualGeneration)
-                    {
-                        Console.WriteLine("ID: " + tuple.Item1.Id + " , PRICE: " + tuple.Item1.WorkSection.Price + " <-> ID: " + tuple.Item2.Id + " , PRICE: " + tuple.Item2.WorkSection.Price);
-                    }
-                }
-                Crossing();
-                UpadateWorks();
-                flag--;
-            } while (flag > 0);
-            Console.WriteLine("\n" + actualGeneration.Count + " GENERATIONS LATER...\n");
-            foreach (Tuple<Work, Work> tuple in actualGeneration)
-            {
-                Console.WriteLine("ID: " + tuple.Item1.Id + " , PRICE: " + tuple.Item1.WorkSection.Price + " <-> ID: " + tuple.Item2.Id + " , PRICE: " + tuple.Item2.WorkSection.Price);
-            }
-            Console.WriteLine("\nRESULT: ");
-            //Sort works data lower price to higher price.
-            works.Sort((a, b) => a.WorkSection.Price.CompareTo(b.WorkSection.Price));
-            Work resultWork = works[0];
-            Console.WriteLine("ID: " + resultWork.Id);
-            Console.Write("DESIGNER(S): ");
-            foreach (Designer d in resultWork.Designers)
-            {
-                Console.Write(d.Name + ". ");
-            }
-            Console.WriteLine("\nUBICATION: " + resultWork.Ubication.UbicationName);
-            Console.WriteLine("WORK SECTION: " + resultWork.WorkSection.Name);
-            Console.WriteLine("PRICE: " + resultWork.WorkSection.Price);
-        }
-
+        //Dictionary to contein parents in pairs.
+        //private Dictionary<Work, Work> actualGeneration;
 
         //Contructor receives n quantity of generations that user want.
         public GeneticAlgorithm(int n) 
@@ -84,167 +31,259 @@ namespace TECGames.Genetic_Algorithm
                 }
             }
 
+            PrintData();
+
             int flag = n;
             //Begin of genetic algorithm process. Start a process of n generations.
             while (n > 0)
             {
                 Courtship(works);
-                if (flag == n)
-                {
-                    Console.WriteLine("PARENTS: parent 1 <-> parent 2 \n");
-                    foreach (Tuple<Work, Work> tuple in actualGeneration)
-                    {
-                        Console.WriteLine("ID: "+tuple.Item1.Id+ " , PRICE: " + tuple.Item1.WorkSection.Price+ " <-> ID: " + tuple.Item2.Id+ " , PRICE: " + tuple.Item2.WorkSection.Price);
-                    }
-                }
-                Crossing();
-                UpadateWorks();
                 n--;
             }
-            Console.WriteLine("\n"+flag+ " GENERATIONS LATER...\n");
-            foreach (Tuple<Work, Work> tuple in actualGeneration)
-            {
-                Console.WriteLine("ID: " + tuple.Item1.Id + " , PRICE: " + tuple.Item1.WorkSection.Price + " <-> ID: " + tuple.Item2.Id + " , PRICE: " + tuple.Item2.WorkSection.Price);
-            }
-            Console.WriteLine("\nRESULT: ");
-            //Sort works data lower price to higher price.
-            works.Sort((a, b) => a.WorkSection.Price.CompareTo(b.WorkSection.Price));
-            Work resultWork = works[0];
-            Console.WriteLine("ID: "+resultWork.Id);
-            Console.Write("DESIGNER(S): ");
-            foreach(Designer d in resultWork.Designers)
-            {
-                Console.Write(d.Name + ". ");
-            }
-            Console.WriteLine("\nUBICATION: " + resultWork.Ubication.UbicationName);
-            Console.WriteLine("WORK SECTION: "+resultWork.WorkSection.Name);
-            Console.WriteLine("PRICE: " + resultWork.WorkSection.Price);
+            Console.WriteLine("\n" + flag + " GENERATIONS LATER...\n");
+            PrintData();
         }
 
 
-        //From works data get the suitable pairs and save that pairs in actualGeneration list. 
+        //From works data proposes pairs to get croos else the pairs get mutated. 
         public void Courtship(List<Work> works) {
 
-            //Sort works data lower price to higher price.
-            works.Sort((a, b) => a.WorkSection.Price.CompareTo(b.WorkSection.Price));
+            var rnd = new Random(DateTime.Now.Millisecond);
+            int i = rnd.Next(0, works.Count);
+            int j = rnd.Next(0, works.Count);
 
+            if (works[i].Id != works[j].Id)
+            {
+                if(Evaluate(works[i], works[j]) != -1 && Evaluate(works[j], works[i]) != -1)
+                {
+                    Crossing(works[i], Evaluate(works[i], works[j]), works[j], Evaluate(works[j], works[i]));
+                }
+                else
+                {
+                    Mutation(works[i], works[j]);
+                    //mutation
+                }
+            }
+        }
+
+        //Take each pair of parents to cross and evaluate the two posible children. 
+        //It's important to know that if offspring is better than parents the offsprig substitute the parent(s).  
+        public void Crossing(Work work1, int work1Ubi, Work work2, int work2Ubi)
+        {
+            Work offspring1 = new Work(-1);
+            offspring1.Ubication = work1.Ubication;
+            offspring1.Designers = new List<Designer>();
+            foreach (Designer d in work2.Designers)
+            {
+                if (d.Price.ContainsKey(work1Ubi))
+                {
+                    offspring1.Designers.Add(d);
+                }
+            }
+            string name;
+            Program.schedules.TryGetValue(work1Ubi, out name);
+            offspring1.WorkSection = new WorkSection(-1, name, work1Ubi);
+            offspring1.Price();
+
+            Work offspring2 = new Work(-1);
+            offspring2.Ubication = work2.Ubication;
+            offspring2.Designers = new List<Designer>();
+            foreach (Designer d in work1.Designers)
+            {
+                if (d.Price.ContainsKey(work2Ubi))
+                {
+                    offspring2.Designers.Add(d);
+                }
+            }
+            string name2;
+            Program.schedules.TryGetValue(work2Ubi, out name2);
+            offspring2.WorkSection = new WorkSection(-1, name2, work2Ubi);
+            offspring2.Price();
+
+            //temporal pointers 
+            Work osHigher, osLower;
+            if(offspring1.WorkSection.Price >= offspring2.WorkSection.Price)
+            {
+                osHigher = offspring1;
+                osLower = offspring2;
+            }
+            else
+            {
+                osHigher = offspring2;
+                osLower = offspring1;
+            }
+
+            if(work1.WorkSection.Price >= work2.WorkSection.Price)
+            {
+                if(work1.WorkSection.Price >= osLower.WorkSection.Price)
+                {
+                    osLower.Id = work1.Id;
+                    osLower.WorkSection.Id = osLower.Id;
+                    UpdateWorks(osLower);
+                }
+                else if(work2.WorkSection.Price >= osHigher.WorkSection.Price)
+                {
+                    osHigher.Id = work2.Id;
+                    osHigher.WorkSection.Id = osLower.Id;
+                    UpdateWorks(osHigher);
+                }
+            }
+            else
+            {
+                if (work2.WorkSection.Price >= osLower.WorkSection.Price)
+                {
+                    osLower.Id = work2.Id;
+                    osLower.WorkSection.Id = osLower.Id;
+                    UpdateWorks(osLower);
+                }
+                else if (work1.WorkSection.Price >= osHigher.WorkSection.Price)
+                {
+                    osHigher.Id = work1.Id;
+                    osHigher.WorkSection.Id = osLower.Id;
+                    UpdateWorks(osHigher);
+                }
+            }
+        }
+
+        //Compares work1 ubication schedules to work2 designers schedules. 
+        //It returns int number schedule.
+        public int Evaluate(Work work1, Work work2)
+        {
+            //Two posible schedules for ubications.
+            KeyValuePair<int, string> ubiSch1 = work1.Ubication.Schedule.ElementAt(0);
+            KeyValuePair<int, string> ubiSch2 = work1.Ubication.Schedule.ElementAt(1);
+
+            foreach (Designer d in work2.Designers)
+            {
+                if (d.Price.ContainsKey(ubiSch1.Key) )
+                {
+                    return ubiSch1.Key;
+                }
+                else if (d.Price.ContainsKey(ubiSch2.Key)){
+                    return ubiSch2.Key;
+                }
+            }
+            return -1;
+        }
+
+        //Subtitute the parent
+        public void UpdateWorks(Work w)
+        {
+            for (int i = 0; i < works.Count; i++)
+            {
+                if (works[i].Id == w.Id)
+                {
+                    works[i] = w;
+                }
+            }
+        }
+       
+        public void PrintData()
+        {
+            Console.WriteLine("Total works: " + works.Count);
+            works.Sort((a, b) => a.WorkSection.Price.CompareTo(b.WorkSection.Price));
             foreach (Work w in works)
             {
-                for (int i = works.Count-1; i >= 0; i--) {
-
-                    if (w.Id != works[i].Id && w.WorkSection.Price > works[i].WorkSection.Price && w.WorkSection.Schedule == works[i].WorkSection.Schedule) {
-                        //Create a tuple that represent the relation (the parents).
-                        if (!actualGeneration.Contains(Tuple.Create(w, works[i])))
-                        {
-                            actualGeneration.Add(Tuple.Create(w, works[i]));
-                        }
-                        
-                    }
-                }
+                Console.WriteLine("ID: " + w.Id + " - PRICE: " + w.WorkSection.Price);
             }
         }
 
-        //Take each pair or parents to cross and evaluate the two posible children. 
-        //It's important to know that if offspring is better than parents the offsprig substitute the parent(s).  
-        public void Crossing()
+        public void Mutation(Work work1, Work work2)
         {
-            try {
-                foreach (Tuple<Work, Work> tuple in actualGeneration)
-                {
-
-                    // Offspring (two new instances of work combining attributes of their parents):
-                    Work offspring1 = new Work(0);
-                    offspring1.Designers = tuple.Item1.Designers;
-                    offspring1.Ubication = tuple.Item2.Ubication;
-                    offspring1.WorkSection = new WorkSection(0, "", tuple.Item1.WorkSection.Schedule);
-                    offspring1.WorkSection.Price = 0;
-                    offspring1.Price();
-
-                    Work offspring2 = new Work(0);
-                    offspring2.Designers = tuple.Item2.Designers;
-                    offspring2.Ubication = tuple.Item1.Ubication;
-                    offspring2.WorkSection = new WorkSection(0, "", tuple.Item2.WorkSection.Schedule);
-                    offspring2.WorkSection.Price = 0;
-                    offspring2.Price();
-
-                    //Creating temp pointers 
-                    Work oshigher, oslower = null;
-                    if (offspring1.WorkSection.Price >= offspring2.WorkSection.Price)
-                    {
-                        oshigher = offspring1;
-                        oslower = offspring2;
-                    }
-                    else
-                    {
-                        oshigher = offspring2;
-                        oslower = offspring1;
-                    }
-
-                    //Ask if offpring is better (have cheap work section) than parents.
-                    if (tuple.Item1.WorkSection.Price > oslower.WorkSection.Price)
-                    {
-                        oslower.Id = tuple.Item1.Id;
-                        oslower.WorkSection.Id = tuple.Item1.WorkSection.Id;
-                        oslower.WorkSection.Name = tuple.Item1.WorkSection.Name;
-                        oslower.WorkSection.Schedule = tuple.Item1.WorkSection.Schedule;
-
-                        if (tuple.Item2.WorkSection.Price > oshigher.WorkSection.Price)
-                        {
-                            oshigher.Id = tuple.Item2.Id;
-                            oshigher.WorkSection.Id = tuple.Item2.WorkSection.Id;
-                            oshigher.WorkSection.Name = tuple.Item2.WorkSection.Name;
-                            oshigher.WorkSection.Schedule = tuple.Item2.WorkSection.Schedule;
-                            UpdateParents(oshigher);
-                        }
-                        UpdateParents(oslower);
-                    }
-                    else if (tuple.Item2.WorkSection.Price > oslower.WorkSection.Price)
-                    {
-                        oslower.Id = tuple.Item2.Id;
-                        oslower.WorkSection.Id = tuple.Item2.WorkSection.Id;
-                        oslower.WorkSection.Name = tuple.Item2.WorkSection.Name;
-                        oslower.WorkSection.Schedule = tuple.Item2.WorkSection.Schedule;
-                        UpdateParents(oslower);
-                    }
-                }
-            }
-            catch { }
-            
-            
-        }
-
-        //Update parents (actualGeneration) data.
-        public void UpdateParents(Work work)
-        {
-            for(int i = 0; i< actualGeneration.Count; i++)
+            var rnd = new Random(DateTime.Now.Millisecond);
+            int c = rnd.Next(0, 2);
+            switch (c)
             {
-                if(actualGeneration[i].Item1.Id == work.Id)
-                {
-                    actualGeneration[i] = Tuple.Create(work, actualGeneration[i].Item2);
-                }
-                else if(actualGeneration[i].Item2.Id == work.Id)
-                {
-                    actualGeneration[i] = Tuple.Create(actualGeneration[i].Item1, work);
-                }
-            }
-        }
-        
-        //Update works list referent to actualGeneration.
-        public void UpadateWorks()
-        {
-            works.Clear();
-            foreach(Tuple<Work, Work> tuple in actualGeneration)
-            {
-                if(!works.Contains(tuple.Item1))
-                {
-                    works.Add(tuple.Item1);
-                }
-                else if (!works.Contains(tuple.Item2))
-                {
-                    works.Add(tuple.Item2);
-                }
+                case 0:
+                    for(int i=0; i < work1.Designers.Count; i++)
+                    {
+                        rnd = new Random(DateTime.Now.Millisecond);
+                        int percent = rnd.Next(0, 10);
 
+                        for(int dP = 0; dP < work1.Designers[i].Price.Count; dP++)
+                        {
+
+                            work1.Designers[i].Price[work1.Designers[i].Price.Keys.ElementAt(dP)] -= (work1.WorkSection.Price * percent) / 100;
+                        }
+                    }
+
+                    for (int i = 0; i < work2.Designers.Count; i++)
+                    {
+                        rnd = new Random(DateTime.Now.Millisecond);
+                        int percent = rnd.Next(0, 10);
+
+                        for (int dP = 0; dP < work2.Designers[i].Price.Count; dP++)
+                        {
+                            work2.Designers[i].Price[work2.Designers[i].Price.Keys.ElementAt(dP)] -= (work2.WorkSection.Price * percent) / 100;
+                        }
+                    }
+
+                    break;
+                case 1:
+
+                    for (int i = 0; i < work1.Designers.Count; i++)
+                    {
+                        for (int dP = 0; dP < work1.Designers[i].Price.Count; dP++)
+                        {
+                            foreach(int k in work1.Designers[i].Price.Keys)
+                            {
+                                if (work1.Designers[i].Price[work1.Designers[i].Price.Keys.ElementAt(dP)] < work1.WorkSection.Price && k != work1.WorkSection.Schedule)
+                                {
+                                    Designer temp = work1.Designers[i];
+                                    work1.Designers.Clear();
+                                    work1.Designers.Add(temp);
+                                    foreach(Designer d in Program.designerList)
+                                    {
+                                        if (d.Price.Keys.Contains(k))
+                                        {
+                                            work1.Designers.Add(d);
+                                        }
+                                    }
+                                    string name;
+                                    Program.schedules.TryGetValue(k, out name);
+                                    work1.WorkSection = new WorkSection(work1.Id, name, k);
+                                    work1.Ubication = new Ubication(work1.Id, "Location", k, k);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        break;
+                    }
+
+                    for (int i = 0; i < work2.Designers.Count; i++)
+                    {
+                        for (int dP = 0; dP < work2.Designers[i].Price.Count; dP++)
+                        {
+                            foreach (int k in work2.Designers[i].Price.Keys)
+                            {
+                                if (work2.Designers[i].Price[work2.Designers[i].Price.Keys.ElementAt(dP)] < work2.WorkSection.Price && k != work2.WorkSection.Schedule)
+                                {
+                                    Designer temp = work2.Designers[i];
+                                    work2.Designers.Clear();
+                                    work2.Designers.Add(temp);
+                                    foreach (Designer d in Program.designerList)
+                                    {
+                                        if (d.Price.Keys.Contains(k))
+                                        {
+                                            work2.Designers.Add(d);
+                                        }
+                                    }
+                                    string name;
+                                    Program.schedules.TryGetValue(k, out name);
+                                    work2.WorkSection = new WorkSection(work2.Id, name, k);
+                                    work2.Ubication = new Ubication(work2.Id, "Location", k, k);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        break;
+                    }
+
+                    break;
             }
+            
         }
     }
 }

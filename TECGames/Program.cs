@@ -22,7 +22,7 @@ namespace TECGames
 
         static void Main(string[] args)
         {
-            int x = 10;
+            int x = 1000;
             DataManagement dG=new DataManagement(x);
             dG.DataCreator();
             Console.ReadKey();
@@ -42,9 +42,9 @@ namespace TECGames
 #endif
             Console.ReadKey();
 
-            BranchBound bB = new BranchBound(10);
+            //BranchBound bB = new BranchBound(10);
 
-            GeneticAlgorithm gA = new GeneticAlgorithm();
+            GeneticAlgorithm gA = new GeneticAlgorithm(4000);
 
             Console.ReadKey();
         }
