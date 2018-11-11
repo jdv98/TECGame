@@ -21,14 +21,16 @@ namespace TECGames
         public static List<Result> results = new List<Result>();
 
         public static Dictionary<int, String> schedules = new Dictionary<int, string>() { {0, "No trabaja" },{ 1, "7:00am a 4:00pm" }, { 2, "7:00am a 11:00pm" }, { 3, "7:00pm a 4:00am" }, { 4, "7:00am a 11:00pm" } };
+        public static bool testMode=false;
+
 
         static void Main(string[] args)
         {
             int numberTest = 70;
-            bool testMode = Mode();
+            testMode = Mode();
             bool keepIn = true;
             int x =0;
-            
+
             while (keepIn)
             {
                 if (!testMode)
@@ -70,6 +72,7 @@ namespace TECGames
                         }
                     }
                     testMode = false;
+                    PrintResult();
                 }
 
                 Console.Clear();
@@ -81,6 +84,7 @@ namespace TECGames
                 }
                 Console.Clear();
             }
+
         }
 
         static void Execution(int x)
@@ -88,33 +92,42 @@ namespace TECGames
             DataManagement dG = new DataManagement(x);
             dG.DataCreator();
             Console.WriteLine("All the data have been created");
-            Console.ReadKey();
+            if (!testMode)
+                Console.ReadKey();
             Console.Clear();
-
 
             dG.Linker();
             Console.WriteLine("All the data have been linked");
-            Console.ReadKey();
+            if (!testMode)
+                Console.ReadKey();
             Console.Clear();
 
-#if DEBUG
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
             Console.WriteLine("Memory usage: {0}MB", (System.GC.GetTotalMemory(true) / 1000000).ToString());
             Console.WriteLine("\n_____________________________________\nData couldn't be created \n\nworkList: {0}% \nubicationList: {1}% \ndesignerList: {2}%\n_____________________________________", (int)((((double)x - (double)workList.Count) / (double)x) * ((double)100)), (int)((((double)x - (double)ubicationList.Count) / (double)x) * ((double)100)), (int)((((double)(2 * x) - (double)designerList.Count) / (double)2 * x) * ((double)100)));
             Console.WriteLine("\nTotal created data \n\nworkList={0} \nubicationList={1} \ndesignerList={2} \n_____________________________________", (double)workList.Count, ubicationList.Count, designerList.Count);
-            Console.ReadKey();
+            if (!testMode)
+                Console.ReadKey();
             Console.Clear();
-#endif
+
             Console.WriteLine("_____________________________________\nBranch and bound\n_____________________________________\n");
             BranchBound bB = new BranchBound(4);
-            Console.ReadKey();
+            if (!testMode)
+                Console.ReadKey();
             Console.Clear();
 
 
             Console.WriteLine("_____________________________________\nGenetic algorithm\n_____________________________________\n");
             GeneticAlgorithm gA = new GeneticAlgorithm(100);
-            Console.ReadKey();
+            if (!testMode)
+                Console.ReadKey();
             Console.Clear();
+
+
             ResetList();
+            GC.Collect();
             GC.WaitForPendingFinalizers();
         }
 
@@ -161,30 +174,56 @@ namespace TECGames
             workSectionList = new List<WorkSection>();
             designerList = new List<Designer>();
         }
+
+        static void PrintResult()
+        {
+            Console.Clear();
+            foreach (Result x in results)
+            {
+                Console.WriteLine("\nNum: {0}\n"+x.ToString(),results.IndexOf(x));
+            }
+            Console.ReadKey();
+        }
     }
 
     class Result
     {
-        string algorithm="";
-        long dataAmount = 0;
-        long comparations = 0;
-        long assignments = 0;
-        long timeMilisecond = 0;
+        public string algorithm ="";
+        public long dataAmount = 0;
+        public long comparations = 0;
+        public long assignments = 0;
+        public long timeMilisecond = 0;
 
-        public Result(string algorithm, long dataAmount, long comparations, long assignments, long timeMilisecond)
+        public Result(string algorithm, long dataAmount)
         {
+#if DEBUG
             this.algorithm = algorithm;
             this.dataAmount = dataAmount;
+#endif
+        }
+
+        public Result(string algorithm, long dataAmount, long comparations, long assignments, long timeMilisecond):this(algorithm,dataAmount)
+        {
+#if DEBUG
             this.comparations = comparations;
             this.assignments = assignments;
             this.timeMilisecond = timeMilisecond;
+#endif
+        }
+
+        public void Add(int comparations,int assignments)
+        {
+#if DEBUG
+            this.comparations += comparations;
+            this.assignments += assignments;
+#endif
         }
 
         public override string ToString()
         {
             return "__________________\n" +
                     "Algorithm: " + this.algorithm + 
-                    "__________________\n" +
+                    "\n__________________\n" +
                     "Amount of data: "+ this.dataAmount + 
                     "\nComparations: "+ this.comparations + 
                     "\nAssignments: "+ this.assignments + 
