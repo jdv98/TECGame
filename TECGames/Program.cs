@@ -35,7 +35,7 @@ namespace TECGames
             {
                 if (!testMode)
                 {
-                    Execution(Menu1());
+                    Execution(Menu());
                 }
                 else
                 {
@@ -87,6 +87,7 @@ namespace TECGames
 
         }
 
+        /*Executes the algorithms and data creators and date linker*/
         static void Execution(int x)
         {
             DataManagement dG = new DataManagement(x);
@@ -131,7 +132,7 @@ namespace TECGames
             GC.WaitForPendingFinalizers();
         }
 
-        static int Menu1()
+        static int Menu()
         {
             int workAmount = 0;
             Console.Write("Insert number of works you want:");
@@ -143,6 +144,7 @@ namespace TECGames
             return workAmount;
         }
 
+        /*Switch between test mode and free mode*/
         static bool Mode()
         {
             int x = -1;
@@ -167,12 +169,14 @@ namespace TECGames
             return testMode;
         }
 
+        /*Cleans the data lists*/
         static void ResetList()
         {
             workList = new List<Work>();
             ubicationList = new List<Ubication>();
             workSectionList = new List<WorkSection>();
             designerList = new List<Designer>();
+            results = new List<Result>();
         }
 
         static void PrintResult()
@@ -186,6 +190,9 @@ namespace TECGames
         }
     }
 
+    /*Contains the results of each test
+     * Note: most be executed on debug mode
+     */
     class Result
     {
         public string algorithm ="";
