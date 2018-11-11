@@ -82,7 +82,7 @@ namespace TECGames
             {
                 for (int counter = 0; counter < quantity; counter++)
                 {
-                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, "Name" + (Program.ubicationList.Count + 1).ToString(), random.Next(3, 6), random.Next(0, 3)));
+                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, "Name" + (Program.ubicationList.Count + 1).ToString(), random.Next(0,3), random.Next(0, 3)));
                     total++;
                 }
             }

@@ -30,8 +30,6 @@ namespace TECGames.Branch_and_bound
                     Assembler(root, work);
                 }
             }
-            Lnv(root);
-
             root =Organizer(root);
 
             GC.WaitForPendingFinalizers();
@@ -88,33 +86,6 @@ namespace TECGames.Branch_and_bound
                 Assembler(root.Right, nWork);
             }
             return ;
-        }
-
-        /*Makes the list of the alives nodes*/  ///revisar
-        private void Lnv(Work root)
-        {
-            if (root== null || cont==query)
-            {
-                return;
-            }
-            else if (root.Left==null && root.Right==null && query>=cont)
-            {
-                lnv.Add(root);
-                cont++;
-                return;
-            }
-            else
-            {
-                Lnv(root.Left);
-                Lnv(root.Right);
-
-                if (cont != query)
-                {
-                    lnv.Add(root);
-                    cont++;
-                }
-            }
-            return;
         }
 
         /*It just prints the nodes*/

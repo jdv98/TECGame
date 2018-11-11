@@ -20,7 +20,7 @@ namespace TECGames
         public static List<Designer> designerList = new List<Designer>();
         public static List<Result> results = new List<Result>();
 
-        public static Dictionary<int, String> schedules = new Dictionary<int, string>() { {0, "No trabaja diurno" },{ 1, "7:00am a 4:00pm" }, { 2, "7:00am a 11:00pm" }, { 3, "7:00pm a 4:00am" }, { 4, "7:00am a 11:00pm" },{5,"No trabaja nocturno" } };
+        public static Dictionary<int, String> schedules = new Dictionary<int, string>() { {0, "No trabaja" },{ 1, "7:00am a 4:00pm" }, { 2, "7:00am a 11:00pm" }, { 3, "7:00pm a 4:00am" }, { 4, "7:00am a 11:00pm" } };
 
         static void Main(string[] args)
         {
@@ -111,11 +111,7 @@ namespace TECGames
 
 
             Console.WriteLine("_____________________________________\nGenetic algorithm\n_____________________________________\n");
-            try
-            {
-                GeneticAlgorithm gA = new GeneticAlgorithm(100);
-            }
-            catch { }
+            GeneticAlgorithm gA = new GeneticAlgorithm(100);
             Console.ReadKey();
             Console.Clear();
             ResetList();

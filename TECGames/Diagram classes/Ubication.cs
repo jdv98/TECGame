@@ -10,13 +10,13 @@ namespace TECGames.Diagram_classes
     {
         private int id;
         private string name;
-        private Dictionary<int, string> schedule = new Dictionary<int, string>();
+        private List<KeyValuePair<int, string>> schedule = new List<KeyValuePair<int, string>>();
         private String hexId = "";      //posible a eliminar
         public bool linked = false;
 
         public int Id { get => id; set => id= value; }
         public string UbicationName{ get => name; set => name= value; }
-        public Dictionary<int,string> Schedule { get => schedule; set => schedule = value; }
+        public List<KeyValuePair<int, string>> Schedule { get => schedule; set => schedule = value; }
         public string HexId { get => hexId; set => hexId = value; }
 
         public Ubication(int id, string ubicationName, int scheduleNocturnal,int scheduleDiurnal)
@@ -36,11 +36,11 @@ namespace TECGames.Diagram_classes
 
             switch (nocturnal)
             {
-                case 5:
+                case 0:
                     flagN = true;
                     break;
                 default:
-                    Schedule.Add(nocturnal, Program.schedules[nocturnal]);
+                    Schedule.Add(new KeyValuePair<int, string>(SN(nocturnal), Program.schedules[nocturnal]));
                     break;
             }
             switch (diurnal)
@@ -49,22 +49,35 @@ namespace TECGames.Diagram_classes
                     flagD = true;
                     break;
                 default:
-                    Schedule.Add(diurnal, Program.schedules[diurnal]);
+                    Schedule.Add(new KeyValuePair<int, string>(diurnal, Program.schedules[diurnal]));
                     break;
             }
 
             if (flagD && !flagN)
             {
-                Schedule.Add(diurnal, Program.schedules[diurnal]);
+                Schedule.Add(new KeyValuePair<int, string>(diurnal, Program.schedules[diurnal]));
             }
             else if (flagN && !flagD)
             {
-                Schedule.Add(nocturnal, Program.schedules[nocturnal]);
+                Schedule.Add(new KeyValuePair<int, string>(SN(nocturnal), Program.schedules[SN(nocturnal)]));
             }
             else if (flagN && flagD)
             {
-                Schedule.Add(x.Next(1, 3), Program.schedules[x.Next(1, 3)]);
-                Schedule.Add(x.Next(3, 5), Program.schedules[x.Next(3, 5)]);
+                Schedule.Add(new KeyValuePair<int, string>(x.Next(1, 3), Program.schedules[x.Next(1, 3)]));
+                Schedule.Add(new KeyValuePair<int, string>(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]));
+            }
+        }
+
+        private int SN(int x)
+        {
+            switch (x)
+            {
+                case 1:
+                    return 3;
+                case 2:
+                    return 4;
+                default:
+                    return 0;
             }
         }
     }
