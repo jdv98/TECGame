@@ -42,7 +42,7 @@ namespace TECGames
 #endif
             Console.ReadKey();
 
-            //BranchBound bB = new BranchBound(10);
+            BranchBound bB = new BranchBound(10);
 
             GeneticAlgorithm gA = new GeneticAlgorithm(4000);
 

@@ -12,17 +12,16 @@ namespace TECGames.Genetic_Algorithm
 
     class GeneticAlgorithm
     {
-        //List to contein valid works to start genetic algorithm.
+        //List to contein valid works to start genetic algorithm. :D
         public List<Work> works = new List<Work>();
 
-        //Dictionary to contein parents in pairs.
-        //private Dictionary<Work, Work> actualGeneration;
 
-        //Contructor receives n quantity of generations that user want.
+
+        //Contructor receives n quantity of generations that user want. xD
         public GeneticAlgorithm(int n) 
         {
             Console.Clear();
-            //Load data (works)
+            //Load data (works) ->
             foreach (Work w in Program.workList)
             {
                 if (w.WorkSection != null)
@@ -34,7 +33,7 @@ namespace TECGames.Genetic_Algorithm
             PrintData();
 
             int flag = n;
-            //Begin of genetic algorithm process. Start a process of n generations.
+            //Begin of genetic algorithm process. Start a process of n generations. :,)
             while (n > 0)
             {
                 Courtship(works);
@@ -45,7 +44,7 @@ namespace TECGames.Genetic_Algorithm
         }
 
 
-        //From works data proposes pairs to get croos else the pairs get mutated. 
+        //From works data proposes pairs to get croos or else the pairs get mutated. <3
         public void Courtship(List<Work> works) {
 
             var rnd = new Random(DateTime.Now.Millisecond);
@@ -61,13 +60,12 @@ namespace TECGames.Genetic_Algorithm
                 else
                 {
                     Mutation(works[i], works[j]);
-                    //mutation
                 }
             }
         }
 
         //Take each pair of parents to cross and evaluate the two posible children. 
-        //It's important to know that if offspring is better than parents the offsprig substitute the parent(s).  
+        //It's important to know that if offspring is better than parents the offsprig substitute the parent(s). :o  
         public void Crossing(Work work1, int work1Ubi, Work work2, int work2Ubi)
         {
             Work offspring1 = new Work(-1);
@@ -146,7 +144,7 @@ namespace TECGames.Genetic_Algorithm
         }
 
         //Compares work1 ubication schedules to work2 designers schedules. 
-        //It returns int number schedule.
+        //It returns int number schedule. ;)
         public int Evaluate(Work work1, Work work2)
         {
             //Two posible schedules for ubications.
@@ -166,7 +164,7 @@ namespace TECGames.Genetic_Algorithm
             return -1;
         }
 
-        //Subtitute the parent
+        //Subtitute the parent. :)
         public void UpdateWorks(Work w)
         {
             for (int i = 0; i < works.Count; i++)
@@ -178,6 +176,7 @@ namespace TECGames.Genetic_Algorithm
             }
         }
        
+        //Foreach and console.writeLine. :v
         public void PrintData()
         {
             Console.WriteLine("Total works: " + works.Count);
@@ -188,6 +187,7 @@ namespace TECGames.Genetic_Algorithm
             }
         }
 
+        //Make random changes to improve the data. (Y)
         public void Mutation(Work work1, Work work2)
         {
             var rnd = new Random(DateTime.Now.Millisecond);
