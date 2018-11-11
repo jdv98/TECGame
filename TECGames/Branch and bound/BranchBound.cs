@@ -11,7 +11,8 @@ namespace TECGames.Branch_and_bound
     {
         public Work root=null;
         private List<Work> lnv = new List<Work>();
-        double menor = 0;
+        double minimunPrice = 0;
+        int nodesAmount = 0;
         int query = 0;int cont = 0;
 
         public BranchBound(int query)
@@ -22,54 +23,57 @@ namespace TECGames.Branch_and_bound
                 if (root == null)
                 {
                     root = work;
+                    nodesAmount++;
                 }
                 else if(work.WorkSection!=null)
                 {
                     Assembler(root, work);
                 }
             }
-            Lnv(root); //Print(root);
-            Console.Write("\n\n\n_________________________________\nUnorganized\n_________________________________\nMain= ");
-            Print(root);
+            Lnv(root);
 
-            Console.Write("\n\n\n_________________________________\nOrganization process\n_________________________________\nMain= ");
             root =Organizer(root);
 
-            Console.Write("\n\n\n_________________________________\nOrganized\n_________________________________\nMain= "); Print(root);
-
+            GC.WaitForPendingFinalizers();
             cont = 0;
-            root = Bound(root,root);
-            Console.Write("\n\n\n_________________________________\nOrganized and bounded\n_________________________________\nMain= "); Print(root);
+            root = Bound(root,root); GC.WaitForPendingFinalizers();
+            Console.WriteLine("Original total of nodes: {0}",nodesAmount);
+            Console.WriteLine("New total of nodes: {0}", cont);
+            Console.Write("\n_________________________________\nOrganized and bounded\n_________________________________\nMain= "); Print(root);
+
         }
 
         /*Conditionals to make the branching*/
         private void Assembler(Work root,Work nWork)
         {
-            if (menor == 0 && root.WorkSection.Price > nWork.WorkSection.Price)
+            if (minimunPrice == 0 && root.WorkSection.Price > nWork.WorkSection.Price)
             {
-                menor = nWork.WorkSection.Price;
+                minimunPrice = nWork.WorkSection.Price;
             }
-            else if (menor == 0 && root.WorkSection.Price < nWork.WorkSection.Price)
+            else if (minimunPrice == 0 && root.WorkSection.Price < nWork.WorkSection.Price)
             {
-                menor = root.WorkSection.Price;
+                minimunPrice = root.WorkSection.Price;
             }
-            else if (menor>nWork.WorkSection.Price)
+            else if (minimunPrice>nWork.WorkSection.Price)
             {
-                menor = nWork.WorkSection.Price;
+                minimunPrice = nWork.WorkSection.Price;
             }
 
 
             if (root.WorkSection.Price>nWork.WorkSection.Price && root.Left==null)
             {
                 root.Left = nWork;
+                nodesAmount++;
             }
             else if (root.WorkSection.Price < nWork.WorkSection.Price && root.Right == null)
             {
                 root.Right = nWork;
+                nodesAmount++;
             }
             else if (root.WorkSection.Price == nWork.WorkSection.Price && root.Left==null)
             {
                 root.Left = nWork;
+                nodesAmount++;
             }
             else if (root.WorkSection.Price == nWork.WorkSection.Price && root.Left != null)
             {
@@ -127,7 +131,7 @@ namespace TECGames.Branch_and_bound
 
                 Console.SetCursorPosition(7, Console.CursorTop);
                 Console.Write("Id: {0}",root.Id);
-                Console.SetCursorPosition(14, Console.CursorTop);
+                Console.SetCursorPosition(17, Console.CursorTop);
                 Console.Write("Price:{0}\nLeft= ",root.WorkSection.Price);
                 Print(root.Left);
 
@@ -144,26 +148,8 @@ namespace TECGames.Branch_and_bound
             {
                 return root;
             }
-            if (root.Left != null)
-            {
-                Console.WriteLine("Actual={1} Left={0}", root.Left.Id, root.Id);
-            }
-            else
-            {
-                Console.WriteLine("Actual={1} Left={0}", "null", root.Id);
-            }
             root.Left = Organizer(root.Left);
-            if (root.Right != null)
-            {
-                Console.WriteLine("Actual={1} Right={0}", root.Right.Id, root.Id);
-            }
-            else
-            {
-                Console.WriteLine("Actual={1} Right={0}", "null",root.Id);
-            }
             root.Right = Organizer(root.Right);
-            Console.WriteLine("Procesando actual={0}", root.Id);
-
 
             /**************************************************************/
             if (root.WorkSection.Price > this.root.WorkSection.Price && root.Left != null)

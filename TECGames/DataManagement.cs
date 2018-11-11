@@ -24,7 +24,6 @@ namespace TECGames
         /*Creates data in parallel to fill the global lists*/
         public void DataCreator()
         {
-            random = new Random(random.Next(DateTime.Now.Millisecond, 5000 * (int)DateTime.Now.Millisecond) * random.Next(10, 5000));
             try
             {
                 Parallel.Invoke(CreateDesigner, CreateUbication, CreateWork);
@@ -83,12 +82,13 @@ namespace TECGames
             {
                 for (int counter = 0; counter < quantity; counter++)
                 {
-                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, "Name" + (Program.ubicationList.Count + 1).ToString(), random.Next(0, 3), random.Next(0, 3)));
+                    Program.ubicationList.Add(new Ubication(Program.ubicationList.Count + 1, "Name" + (Program.ubicationList.Count + 1).ToString(), random.Next(3, 6), random.Next(0, 3)));
                     total++;
                 }
             }
             catch
             {
+
 #if DEBUG
                 Console.WriteLine("UTotal: {0}   Memory: {1}MB", total, (System.GC.GetTotalMemory(true) / 1000000).ToString());
 #endif
@@ -196,6 +196,8 @@ namespace TECGames
 
                 }
             }
+
+            Console.Clear();
         }
 
     }

@@ -36,11 +36,11 @@ namespace TECGames.Diagram_classes
 
             switch (nocturnal)
             {
-                case 0:
+                case 5:
                     flagN = true;
                     break;
                 default:
-                    Schedule.Add(SN(nocturnal), Program.schedules[SN(nocturnal)]);
+                    Schedule.Add(nocturnal, Program.schedules[nocturnal]);
                     break;
             }
             switch (diurnal)
@@ -55,29 +55,16 @@ namespace TECGames.Diagram_classes
 
             if (flagD && !flagN)
             {
-                Schedule.Add(x.Next(1, 3), Program.schedules[x.Next(1, 3)]);
+                Schedule.Add(diurnal, Program.schedules[diurnal]);
             }
             else if (flagN && !flagD)
             {
-                Schedule.Add(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]);
+                Schedule.Add(nocturnal, Program.schedules[nocturnal]);
             }
             else if (flagN && flagD)
             {
-                Schedule.Add(SN(x.Next(1, 3)), Program.schedules[SN(x.Next(1, 3))]);
-            }
-        }
-
-        /*The constructor gets a number from 0 to 2, but the nocturnal schedule works with 3 and 4, so this function just convert it*/
-        private int SN(int x)
-        {
-            switch (x)
-            {
-                case 1:
-                    return 3;
-                case 2:
-                    return 4;
-                default:
-                    return 0;
+                Schedule.Add(x.Next(1, 3), Program.schedules[x.Next(1, 3)]);
+                Schedule.Add(x.Next(3, 5), Program.schedules[x.Next(3, 5)]);
             }
         }
     }
