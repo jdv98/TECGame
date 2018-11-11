@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TECGames.Diagram_classes;
 using TECGames.Branch_and_bound;
 using TECGames.Genetic_Algorithm;
+using System.Diagnostics;
 
 namespace TECGames
 {
@@ -17,6 +18,7 @@ namespace TECGames
         public static List<Ubication> ubicationList = new List<Ubication>();
         public static List<WorkSection> workSectionList = new List<WorkSection>();
         public static List<Designer> designerList = new List<Designer>();
+        public static List<Result> results = new List<Result>();
 
         public static Dictionary<int, String> schedules = new Dictionary<int, string>() { {0, "No trabaja diurno" },{ 1, "7:00am a 4:00pm" }, { 2, "7:00am a 11:00pm" }, { 3, "7:00pm a 4:00am" }, { 4, "7:00am a 11:00pm" },{5,"No trabaja nocturno" } };
 
@@ -161,6 +163,35 @@ namespace TECGames
             ubicationList = new List<Ubication>();
             workSectionList = new List<WorkSection>();
             designerList = new List<Designer>();
+        }
+    }
+
+    class Result
+    {
+        string algorithm="";
+        long dataAmount = 0;
+        long comparations = 0;
+        long assignments = 0;
+        long timeMilisecond = 0;
+
+        public Result(string algorithm, long dataAmount, long comparations, long assignments, long timeMilisecond)
+        {
+            this.algorithm = algorithm;
+            this.dataAmount = dataAmount;
+            this.comparations = comparations;
+            this.assignments = assignments;
+            this.timeMilisecond = timeMilisecond;
+        }
+
+        public override string ToString()
+        {
+            return "__________________\n" +
+                    "Algorithm: " + this.algorithm + 
+                    "__________________\n" +
+                    "Amount of data: "+ this.dataAmount + 
+                    "\nComparations: "+ this.comparations + 
+                    "\nAssignments: "+ this.assignments + 
+                    "\nTime: "+ this.timeMilisecond;
         }
     }
 }
