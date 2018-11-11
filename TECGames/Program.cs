@@ -37,6 +37,7 @@ namespace TECGames
                 }
                 else
                 {
+                    results = new List<Result>();
                     for(;x<numberTest;x++)
                     {
                         if(0<=x && x < 10)
