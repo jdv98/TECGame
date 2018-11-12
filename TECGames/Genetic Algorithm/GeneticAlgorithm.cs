@@ -269,7 +269,12 @@ namespace TECGames.Genetic_Algorithm
                 comparations++;
                 for (int dP = 0; dP < work.Designers[i].Price.Count; dP++)
                 {
-                    work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
+                    comparations++;
+                    if (work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] - (work.WorkSection.Price * percent / 100) >= 0)
+                    {
+                        work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
+                    }
+
                     assignments++;
                     comparations++;
                 }
