@@ -19,6 +19,7 @@ namespace TECGames
         public DataManagement(int quantity)
         {
             this.quantity = quantity;
+            random = new Random(random.Next(1, 800000) * (random.Next(1,80000)+DateTime.Now.Millisecond));
         }
 
         /*Creates data in parallel to fill the global lists*/
@@ -149,7 +150,7 @@ namespace TECGames
             {
                 Console.Clear();
                 Console.WriteLine("Work: {0}", Program.workList.Count - (work.Id + 1));
-
+                random = new Random(work.Id * random.Next(1, 800000) * (random.Next(1, 80000) + DateTime.Now.Millisecond));
                 foreach (Ubication ubication in Program.ubicationList)
                 {
                     int cont = Program.designerList.Count;
