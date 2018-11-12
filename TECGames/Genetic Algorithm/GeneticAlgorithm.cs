@@ -17,6 +17,7 @@ namespace TECGames.Genetic_Algorithm
         public long executedLines = 0;
         public long timeMilisecond = 0;
 
+
         //Contructor receives n quantity of generations that user want. xD
         public GeneticAlgorithm(int n) 
         {
