@@ -14,7 +14,6 @@ namespace TECGames.Genetic_Algorithm
         public long dataAmount = 0;
         public long comparations = 0;
         public long assignments = 0;
-        public long executedLines = 0;
         public long timeMilisecond = 0;
 
 
@@ -48,7 +47,7 @@ namespace TECGames.Genetic_Algorithm
             }
 
             //For return code operations result. <- 
-            Result result = new Result("Genetic algorithm",dataAmount,comparations,assignments,executedLines,timeMilisecond);
+            Result result = new Result("Genetic algorithm",dataAmount,comparations,assignments,timeMilisecond);
             Program.results.Add(result);
 
             Console.WriteLine("\n" + flag + " GENERATIONS LATER...\n");
@@ -267,7 +266,11 @@ namespace TECGames.Genetic_Algorithm
                 comparations++;
                 for (int dP = 0; dP < work.Designers[i].Price.Count; dP++)
                 {
-                    work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
+                    comparations++;
+                    if (work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] - (work.WorkSection.Price * percent / 100) >= 0) {
+                        work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
+                    }
+                    
                     assignments++;
                     comparations++;
                 }
