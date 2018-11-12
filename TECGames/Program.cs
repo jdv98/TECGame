@@ -73,6 +73,7 @@ namespace TECGames
                     }
                     testMode = false;
                     PrintResult();
+                    Console.ReadKey();
                 }
 
                 Console.Clear();
@@ -121,7 +122,7 @@ namespace TECGames
 
 
             Console.WriteLine("_____________________________________\nGenetic algorithm\n_____________________________________\n");
-            GeneticAlgorithm gA = new GeneticAlgorithm(100);
+            GeneticAlgorithm gA = new GeneticAlgorithm(workList.Count*2);
             if (!testMode)
                 Console.ReadKey();
             Console.Clear();
@@ -176,7 +177,6 @@ namespace TECGames
             ubicationList = new List<Ubication>();
             workSectionList = new List<WorkSection>();
             designerList = new List<Designer>();
-            results = new List<Result>();
         }
 
         static void PrintResult()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TECGames.Diagram_classes;
 
@@ -11,15 +12,17 @@ namespace TECGames.Genetic_Algorithm
         public List<Work> works = new List<Work>();
 
         //Vars for code operations 8)
-        public long dataAmount = 0;
         public long comparations = 0;
         public long assignments = 0;
-        public long timeMilisecond = 0;
+        Stopwatch stopwatch = new Stopwatch();
 
 
         //Contructor receives n quantity of generations that user want. xD
         public GeneticAlgorithm(int n) 
         {
+            if (Program.testMode)
+                stopwatch.Start();
+
             Console.Clear();
             //Load data (works) ->
             comparations++;
@@ -47,7 +50,7 @@ namespace TECGames.Genetic_Algorithm
             }
 
             //For return code operations result. <- 
-            Result result = new Result("Genetic algorithm",dataAmount,comparations,assignments,timeMilisecond);
+            Result result = new Result("Genetic algorithm", Program.workList.Count, comparations,assignments,stopwatch.ElapsedMilliseconds);
             Program.results.Add(result);
 
             Console.WriteLine("\n" + flag + " GENERATIONS LATER...\n");
@@ -266,11 +269,7 @@ namespace TECGames.Genetic_Algorithm
                 comparations++;
                 for (int dP = 0; dP < work.Designers[i].Price.Count; dP++)
                 {
-                    comparations++;
-                    if (work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] - (work.WorkSection.Price * percent / 100) >= 0) {
-                        work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
-                    }
-                    
+                    work.Designers[i].Price[work.Designers[i].Price.Keys.ElementAt(dP)] -= (work.WorkSection.Price * percent) / 100;
                     assignments++;
                     comparations++;
                 }
@@ -288,7 +287,7 @@ namespace TECGames.Genetic_Algorithm
                 for (int dP = 0; dP < work.Designers[i].Price.Count; dP++)
                 {
                     comparations++;
-                    for (int key = 0; key < work.Designers[i].Price.Keys.Count; i++)
+                    for (int key = 0; key < work.Designers[i].Price.Keys.Count; key++)
                     {
                         int k = work.Designers[i].Price.Keys.ElementAt(key);
                         assignments++;
